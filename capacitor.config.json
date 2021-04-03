@@ -1,0 +1,6 @@
+{
+  "appId": "com.buggames.countryballs",
+  "appName": "countryballs",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
