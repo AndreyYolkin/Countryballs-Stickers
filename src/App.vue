@@ -1,6 +1,6 @@
 <template>
-  <div id="app" data-app>
-    <v-container class="tw-p-0">
+  <div id="app" class="tw-h-screen" data-app>
+    <v-container class="tw-p-0 tw-h-full">
       <div
         class="tw-grid md:tw-grid-cols-2 md:tw-gap-4 tw-grid-cols-1 tw-grid-rows-auto tw-w-full tw-h-full tw-max-h-screen tw-auto-rows-fr"
       >
