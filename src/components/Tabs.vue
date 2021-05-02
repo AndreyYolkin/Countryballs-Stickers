@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs v-model="tab" background-color="#f0f0f0" color="#ea2" fixed-tabs>
+    <v-tabs v-model="tab" background-color="#f0f0f0" color="#ea2" class="tw-flex-grow-0" fixed-tabs>
       <v-tab>
         <v-icon>mdi-web</v-icon>
       </v-tab>
@@ -19,7 +19,7 @@
         <TabFlag @setbg="$emit('setbg', $event)" />
       </v-tab-item>
       <v-tab-item>
-        <TabFlag />
+        <TabBack />
       </v-tab-item>
       <v-tab-item>
         <TabFlag />
@@ -33,9 +33,11 @@
 
 <script>
 import TabFlag from "./TabFlag";
+import TabBack from "./TabBack";
 export default {
   components: {
     TabFlag,
+    TabBack,
   },
   data: function () {
     return {
