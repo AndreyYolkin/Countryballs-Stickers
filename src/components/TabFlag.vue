@@ -2,12 +2,13 @@
   <div class="tw-relative tw-w-full">
     <div class="tw-pt-4 tw-px-3 tw-bg-white">
       <v-select
+        v-model="continent"
         label="Continent"
         item-value="value"
         item-text="text"
         filled
+        dense
         hide-details
-        v-model="continent"
         :items="continents"
       />
     </div>
@@ -15,8 +16,8 @@
       <v-container fluid>
         <v-row>
           <v-col
-            :key="index"
             v-for="(image, index) in flags.keys()"
+            :key="index"
             cols="4"
             md="3"
           >
@@ -24,14 +25,16 @@
               <v-card
                 :img="getImgUrl(index)"
                 class="d-flex align-center tw-aspect-w-1 tw-aspect-h-1"
-                @click="$emit('setbg', index), toggle()"
+                @click="$emit('setflag', { index, continent }), toggle()"
               >
                 <v-scroll-y-transition>
                   <div
                     v-if="active"
                     class="tw-flex tw-justify-center tw-items-center tw-text-center"
                   >
-                    <v-icon dark>mdi-check</v-icon>
+                    <v-icon dark>
+                      mdi-check
+                    </v-icon>
                   </div>
                 </v-scroll-y-transition>
               </v-card>
@@ -44,28 +47,58 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
-  data: () => ({
-    continent: "europe",
-    continents: [
-      { text: "Europe", value: "europe" },
-      { text: "Asia", value: "asia" },
-      { text: "America", value: "america" },
-    ],
-    flags: () => {},
-  }),
+  data() {
+    return {
+      allFlags: {},
+      flags: () => {},
+    }
+  },
+  computed: {
+    ...mapState({
+      continents: state => state.app.continents
+    }),
+    continent: {
+      get() {
+        return this.$store.state.app.continent
+      },
+      set(value) {
+        this.$setContinent(value)
+      }
+    }
+  },
+  watch: {
+    continent: {
+      handler() {
+        this.flags = this.allFlags[this.continent]
+      },
+      immediate: true
+    }
+  },
   created() {
-    this.loadFlags();
+    this.loadFlags()
   },
   methods: {
+    ...mapMutations({
+      $setContinent: 'setContinent'
+    }),
     loadFlags() {
-      this.flags = require.context("../assets/buttons/FL_EU", false, /\.png$/);
+      this.allFlags = {
+        EU: require.context('../assets/buttons/FL_EU', false, /\.png$/),
+        AS: require.context('../assets/buttons/FL_AS', false, /\.png$/),
+        AM: require.context('../assets/buttons/FL_AM', false, /\.png$/),
+        AFAU: require.context('../assets/buttons/FL_AFAU', false, /\.png$/),
+        OT: require.context('../assets/buttons/FL_OT', false, /\.png$/),
+      }
+      this.flags = this.allFlags[this.continent]
     },
     getImgUrl(index) {
-      return this.flags("./" + index.toString().padStart(3, 0) + ".png");
+      return this.flags('./' + index.toString().padStart(3, 0) + '.png')
     },
   },
-};
+}
 </script>
 
 <style>

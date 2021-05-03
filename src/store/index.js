@@ -11,11 +11,32 @@ export default new Vuex.Store({
       customBack: false,
       eye: 0,
       accessories: [],
+    },
+    app: {
+      continents: [
+        { text: 'Europe', value: 'EU' },
+        { text: 'Asia', value: 'AS' },
+        { text: 'America', value: 'AM' },
+        { text: 'Africa & Australia', value: 'AFAU' },
+        { text: 'Other', value: 'OT' },
+      ],
+      continent: 'EU'
+    },
+    selected: {
+      active: false,
+      objects: {}
     }
   }),
   mutations: {
     setFlag(state, data) {
       state.ball.flag = data
+    },
+    setContinent(state, continent) {
+      state.app.continent = continent
+    },
+    setSelected(state, data) {
+      state.selected.active = data.active
+      state.selected.objects = data.objects
     },
     setBack(state, data) {
       state.ball.flag = data

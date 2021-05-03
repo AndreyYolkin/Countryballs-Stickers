@@ -1,28 +1,10 @@
 <template>
   <div class="tw-relative tw-w-full">
-    <div class="tw-pt-4 tw-px-3 tw-bg-white">
-      <v-select
-        v-model="background"
-        label="Background"
-        item-value="value"
-        item-text="text"
-        filled
-        hide-details
-        :items="backgrounds"
-      />
-    </div>
     <v-item-group mandatory>
       <v-container fluid>
-        <v-row v-if="background === 'color'">
-          <v-col cols="12">
-            <v-color-picker
-              v-model="color"
-            />
-          </v-col>
-        </v-row>
-        <v-row v-if="background !== 'color' && background !== 'transparent'">
+        <v-row>
           <v-col
-            v-for="(image, index) in flags.keys()"
+            v-for="(image, index) in eyes.keys()"
             :key="index"
             cols="4"
             md="3"
@@ -31,7 +13,7 @@
               <v-card
                 :img="getImgUrl(index)"
                 class="d-flex align-center tw-aspect-w-1 tw-aspect-h-1"
-                @click="$emit('setbg', index), toggle()"
+                @click="$emit('seteye', { index }), toggle()"
               >
                 <v-scroll-y-transition>
                   <div
@@ -53,25 +35,26 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
-  data: () => ({
-    color: '#ffffff',
-    background: 'color',
-    backgrounds: [
-      { text: 'Color', value: 'color' },
-      { text: 'Transparent', value: 'transparent' },
-    ],
-    flags: () => {},
-  }),
+  data() {
+    return {
+      eyes: () => {},
+    }
+  },
   created() {
     this.loadFlags()
   },
   methods: {
+    ...mapMutations({
+      $setContinent: 'setContinent'
+    }),
     loadFlags() {
-      this.flags = require.context('../assets/buttons/FL_EU', false, /\.png$/)
+      this.eyes = require.context('../assets/buttons/EY', false, /\.png$/)
     },
     getImgUrl(index) {
-      return this.flags('./' + index.toString().padStart(3, 0) + '.png')
+      return this.eyes('./' + index.toString().padStart(3, 0) + '.png')
     },
   },
 }

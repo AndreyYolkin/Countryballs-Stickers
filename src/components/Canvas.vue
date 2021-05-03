@@ -1,81 +1,178 @@
 <template>
-  <canvas ref="can" width="200" height="200"></canvas>
+  <canvas ref="can" />
 </template>
 
 <script>
-import { fabric } from "fabric";
+import { fabric } from 'fabric'
 
 export default {
-  data: function () {
+  data () {
     return {
-      canvas: null,
-    };
+      canvas: {},
+      allFlags: {},
+      eyes: {},
+      accessories: {},
+      flag: {},
+      eye: {}
+    }
   },
   mounted() {
-    const ref = this.$refs.can;
-    this.fitToContainer(ref);
-    this.canvas = new fabric.StaticCanvas(ref);
-    const rect = new fabric.Rect({
-      fill: "red",
-      width: 20,
-      height: 20,
-    });
-    this.canvas.add(rect);
+    const ref = this.$refs.can
+    this.canvas = new fabric.Canvas(ref)
+    this.fitToContainer(this.canvas)
+    this.$nextTick(() => {
+      window.addEventListener('resize', () => this.fitToContainer(this.canvas))
+      this.canvas.on('selection:created', (objects) => {
+        this.$store.commit('setSelected', { active: true, objects })
+      })
+      this.canvas.on('selection:cleared', () => {
+        this.$store.commit('setSelected', { active: false })
+      })
+    })
+    this.initFlag()
+    this.initStroke()
+    this.initEye()
   },
   created() {
-    this.loadFlags();
+    this.loadFlags()
+    this.loadEyes()
+    this.loadAccessories()
   },
   methods: {
     setBg(index) {
-      const canvas = this.canvas;
+      const canvas = this.canvas
       fabric.Image.fromURL(this.getImgUrl(index), function (img) {
-        const canvasAspect = canvas.width / canvas.height;
-        const imgAspect = img.width / img.height;
-        let left, top, scaleFactor;
-
-        if (canvasAspect >= imgAspect) {
-          scaleFactor = canvas.width / img.width;
-          left = 0;
-          top = -(img.height * scaleFactor - canvas.height) / 2;
-        } else {
-          scaleFactor = canvas.height / img.height;
-          top = 0;
-          left = -(img.width * scaleFactor - canvas.width) / 2;
-        }
+        const scaleFactor = canvas.height / img.height
         canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
-          left: left,
-          top: top,
-          scaleX: scaleFactor,
-          scaleY: scaleFactor,
-        });
-      });
+          left: 0,
+          top: 0,
+          originX: 'left',
+          originY: 'top',
+          scaleX: scaleFactor / canvas.getZoom(),
+          scaleY: scaleFactor / canvas.getZoom(),
+        })
+      })
+    },
+    deleteAccessories() {
+      const canvas = this.canvas
+      canvas.getActiveObjects().forEach((obj) => {
+        canvas.remove(obj)
+      })
+      canvas.discardActiveObject().renderAll()
+      this.$store.commit('setSelected', { active: false })
+    },
+    addAccessory(event) {
+      const { index } = event
+      const canvas = this.canvas
+      fabric.Image.fromURL(this.getAccessoryURL(index), (myImg) => {
+        const scaleFactor = canvas.height / myImg.height
+        const img = myImg.set({
+          left: 360,
+          top: 360,
+          originX: 'center',
+          originY: 'center',
+          scaleX: scaleFactor * 0.15 / canvas.getZoom(),
+          scaleY: scaleFactor * 0.15 / canvas.getZoom(),
+        })
+        canvas.add(img)
+      })
+    },
+    setFlag(event) {
+      const { index, continent } = event
+      const canvas = this.canvas
+      this.flag.setSrc(this.getFlagURL(index, continent), canvas.renderAll.bind(canvas))
+    },
+    setEye(event) {
+      const { index } = event
+      const canvas = this.canvas
+      this.eye.setSrc(this.getEyeURL(index), canvas.renderAll.bind(canvas))
+    },
+    initFlag() {
+      const canvas = this.canvas
+      fabric.Image.fromURL(this.getFlagURL(0, 'EU'), (myImg) => {
+        this.flag = myImg
+        const scaleFactor = canvas.height / myImg.height
+        const img = myImg.set({
+          left: 360,
+          top: 360,
+          originX: 'center',
+          originY: 'center',
+          scaleX: scaleFactor * 0.75 / canvas.getZoom(),
+          scaleY: scaleFactor * 0.75 / canvas.getZoom(),
+          selectable: false
+        })
+        canvas.add(img)
+      })
+    },
+    initStroke() {
+      const canvas = this.canvas
+      const stroke = require.context('../assets/strokes', false, /\.png$/)('./circle.png')
+      fabric.Image.fromURL(stroke, (myImg) => {
+        const scaleFactor = canvas.height / myImg.height
+        const img = myImg.set({
+          left: 355,
+          top: 360,
+          originX: 'center',
+          originY: 'center',
+          scaleX: scaleFactor * 0.76 / canvas.getZoom(),
+          scaleY: scaleFactor * 0.76 / canvas.getZoom(),
+          selectable: false,
+        })
+        canvas.add(img)
+      })
+    },
+    initEye() {
+      const canvas = this.canvas
+      fabric.Image.fromURL(this.getEyeURL(0), (myImg) => {
+        this.eye = myImg
+        const scaleFactor = canvas.height / myImg.height
+        const img = myImg.set({
+          left: 400,
+          top: 360,
+          originX: 'center',
+          originY: 'center',
+          scaleX: scaleFactor * 0.20 / canvas.getZoom(),
+          scaleY: scaleFactor * 0.20 / canvas.getZoom(),
+          selectable: false,
+        })
+        canvas.add(img)
+      })
     },
     loadFlags() {
-      this.flags = require.context("../assets/buttons/FL_EU", false, /\.png$/);
-    },
-    getImgUrl(index) {
-      return this.flags("./" + index.toString().padStart(3, 0) + ".png");
-    },
-    fitToContainer(canvas) {
-      // Make it visually fill the positioned parent
-      canvas.style.width = "100%";
-      canvas.style.position = "absolute";
-      canvas.style.height = "100%";
-      // ...then set the internal size to match
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      if (canvas.nextElementSibling) {
-        const upper_canvas = canvas.nextElementSibling;
-        upper_canvas.style.width = "100%";
-        upper_canvas.style.position = "absolute";
-        upper_canvas.style.height = "100%";
-        // ...then set the internal size to match
-        upper_canvas.width = upper_canvas.offsetWidth;
-        upper_canvas.height = upper_canvas.offsetHeight;
+      this.allFlags = {
+        EU: require.context('../assets/flags/FL_EU', false, /\.png$/),
+        AS: require.context('../assets/flags/FL_AS', false, /\.png$/),
+        AM: require.context('../assets/flags/FL_AM', false, /\.png$/),
+        AFAU: require.context('../assets/flags/FL_AFAU', false, /\.png$/),
+        OT: require.context('../assets/flags/FL_OT', false, /\.png$/),
       }
     },
+    loadEyes() {
+      this.eyes = require.context('../assets/eyes', false, /\.png$/)
+    },
+    loadAccessories() {
+      this.accessories = require.context('../assets/accessories', false, /\.png$/)
+    },
+    getEyeURL(index) {
+      return this.eyes('./' + index.toString().padStart(3, 0) + '.png')
+    },
+    getAccessoryURL(index) {
+      return this.accessories('./' + index.toString().padStart(3, 0) + '.png')
+    },
+    getFlagURL(index, continent) {
+      return this.allFlags[continent]('./' + index.toString().padStart(3, 0) + '.png')
+    },
+    getImgUrl(index) {
+      return this.flags('./' + index.toString().padStart(3, 0) + '.png')
+    },
+    fitToContainer(canvas) {
+      const size = this.$refs.can.parentNode.clientWidth
+      canvas.setWidth(size)
+      canvas.setHeight(size)
+      canvas.setZoom(size / 720)
+    },
   },
-};
+}
 </script>
 <style>
 .canvas-container {
