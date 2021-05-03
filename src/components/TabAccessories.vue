@@ -27,9 +27,9 @@
         fixed
         left
         bottom
-        color="#E53935"
+        color="red darken-1"
       >
-        <v-icon color="#fff" @click="$emit('deleteaccessories')">
+        <v-icon color="white" @click="$emit('deleteaccessories')">
           mdi-delete
         </v-icon>
       </v-btn>
