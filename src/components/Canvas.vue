@@ -4,6 +4,8 @@
 
 <script>
 import { fabric } from 'fabric'
+import { Share } from '@capacitor/share'
+import { Filesystem, Directory } from '@capacitor/filesystem'
 
 export default {
   data () {
@@ -171,6 +173,39 @@ export default {
       canvas.setHeight(size)
       canvas.setZoom(size / 720)
     },
+    saveImage() {
+      download(this.canvas.toDataURL({ multiplier: 720 / this.canvas.width }))
+      function download(dataURL) {
+        Filesystem.checkPermissions().then(response => {
+          if (response && response.publicStorage === 'granted') {
+            Filesystem.writeFile({
+              path: 'output.png',
+              data: dataURL,
+              directory: Directory.Documents
+            })
+          } else if (response && response.publicStorage !== 'denied') {
+            Filesystem.requestPermissions()
+              .then(response => {
+                if (response && response.publicStorage === 'granted') {
+                  Filesystem.writeFile({
+                    path: 'output.png',
+                    data: dataURL,
+                    directory: Directory.Documents
+                  })
+                }
+              })
+          }
+        })
+      }
+    },
+    shareImage() {
+      Share.share({
+        title: 'See cool stuff',
+        text: 'I\'ve made this using Countryballs Stickers',
+        url: 'http://ionicframework.com/',
+        dialogTitle: 'Share with buddies',
+      })
+    }
   },
 }
 </script>

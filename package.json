@@ -1,18 +1,21 @@
 {
   "name": "countryballs",
-  "version": "0.1.0",
+  "version": "2.0.0-a",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "dev": "npm run serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "dev": "npm run serve",
     "lint-fix": "vue-cli-service lint --fix"
   },
   "dependencies": {
+    "@capacitor-community/admob": "^3.0.0-5",
     "@capacitor/android": "^3.0.0-rc.1",
     "@capacitor/cli": "^3.0.0-rc.1",
     "@capacitor/core": "^3.0.0-rc.1",
+    "@capacitor/filesystem": "^0.5.3",
+    "@capacitor/share": "^0.5.4",
     "@mdi/font": "5.9.55",
     "@tailwindcss/aspect-ratio": "^0.2.0",
     "core-js": "^3.11.1",
