@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "dev": "npm run serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "lint-fix": "vue-cli-service lint --fix"
   },
   "dependencies": {
     "@capacitor/android": "^3.0.0-rc.1",
@@ -24,13 +25,16 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@nuxtjs/eslint-config": "^6.0.0",
+    "@nuxtjs/eslint-module": "^3.0.2",
     "@tailwindcss/postcss7-compat": "^2.1.2",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-vuex": "^4.5.12",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
+    "eslint": "^7.25.0",
+    "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.32.12",
     "sass-loader": "^10.0.0",
