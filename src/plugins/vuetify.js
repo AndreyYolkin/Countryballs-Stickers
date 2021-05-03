@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib/framework'
-// eslint-disable-next-line no-unused-vars
-import colors from 'vuetify/lib/util/colors'
+
+import colors from 'vuetify/es5/util/colors'
 
 Vue.use(Vuetify)
 
@@ -12,14 +12,15 @@ export default new Vuetify({
     },
     themes: {
       light: {
-        ...colors,
-        primary: '#3c096c',
-        secondary: '#424242',
-        accent: '#82B1FF',
-        error: '#E53935',
-        info: '#2196F3',
-        success: '#4CAF50',
-        warning: '#FFC107',
+        primary: colors.deepPurple.lighten1,
+        accent: colors.grey.lighten1,
+        secondary: colors.indigo.lighten1,
+        add: colors.green.lighten1,
+        remove: colors.red.lighten1,
+        info: colors.teal.lighten1,
+        warning: colors.amber.lighten1,
+        error: colors.deepOrange.accent4,
+        success: colors.green.accent3,
       },
     },
   },
