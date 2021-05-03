@@ -4,8 +4,8 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-        gridTemplateRows: {
-         'auto': 'auto',
+      gridTemplateRows: {
+        auto: 'auto',
       }
     },
   },
