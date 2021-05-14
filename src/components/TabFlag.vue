@@ -3,16 +3,15 @@
     <div class="tw-pt-4 tw-px-3 tw-bg-white">
       <v-select
         v-model="continent"
-        label="Continent"
+        :label="$t('app.continentLabel')"
         item-value="value"
         item-text="text"
         filled
-        dense
         hide-details
         :items="continents"
       />
     </div>
-    <v-item-group mandatory>
+    <v-item-group>
       <v-container fluid>
         <v-row>
           <v-col
@@ -33,7 +32,7 @@
                     class="tw-flex tw-justify-center tw-items-center tw-text-center"
                   >
                     <v-icon dark>
-                      mdi-check
+                      {{ mdiCheck }}
                     </v-icon>
                   </div>
                 </v-scroll-y-transition>
@@ -47,19 +46,22 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mdiCheck } from '@mdi/js'
+import { mapMutations } from 'vuex'
 
 export default {
   data() {
     return {
       allFlags: {},
       flags: () => {},
+      mdiCheck
     }
   },
   computed: {
-    ...mapState({
-      continents: state => state.app.continents
-    }),
+    continents() {
+      return this.$store.state.app.continents
+        .map(c => ({ text: this.$t(`app.continents.${c}`), value: c }))
+    },
     continent: {
       get() {
         return this.$store.state.app.continent

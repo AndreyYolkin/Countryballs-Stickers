@@ -21,7 +21,7 @@
                     class="tw-flex tw-justify-center tw-items-center tw-text-center"
                   >
                     <v-icon dark>
-                      mdi-check
+                      {{ mdiCheck }}
                     </v-icon>
                   </div>
                 </v-scroll-y-transition>
@@ -35,12 +35,14 @@
 </template>
 
 <script>
+import { mdiCheck } from '@mdi/js'
 import { mapMutations } from 'vuex'
 
 export default {
   data() {
     return {
       eyes: () => {},
+      mdiCheck
     }
   },
   created() {

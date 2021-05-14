@@ -39,7 +39,7 @@
                     class="tw-flex tw-justify-center tw-items-center tw-text-center"
                   >
                     <v-icon dark>
-                      mdi-check
+                      {{ mdiCheck }}
                     </v-icon>
                   </div>
                 </v-scroll-y-transition>
@@ -53,16 +53,21 @@
 </template>
 
 <script>
+import { mdiCheck } from '@mdi/js'
+
 export default {
-  data: () => ({
-    color: '#ffffff',
-    background: 'color',
-    backgrounds: [
-      { text: 'Color', value: 'color' },
-      { text: 'Transparent', value: 'transparent' },
-    ],
-    flags: () => {},
-  }),
+  data() {
+    return {
+      color: '#ffffff',
+      background: 'color',
+      backgrounds: [
+        { text: 'Color', value: 'color' },
+        { text: 'Transparent', value: 'transparent' },
+      ],
+      flags: () => {},
+      mdiCheck
+    }
+  },
   created() {
     this.loadFlags()
   },

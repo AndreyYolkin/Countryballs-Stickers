@@ -11,45 +11,27 @@
           >
             <v-item>
               <v-card
-                :img="getImgUrl(index)"
-                class="d-flex align-center tw-aspect-w-1 tw-aspect-h-1"
+                class="d-flex align-center"
                 @click="$emit('addaccessory', { index })"
-              />
+              >
+                <v-img :src="getImgUrl(index)" aspect-ratio="1" contain />
+              </v-card>
             </v-item>
           </v-col>
         </v-row>
       </v-container>
     </v-item-group>
-    <v-fab-transition>
-      <v-btn
-        v-if="selected"
-        fab
-        fixed
-        left
-        bottom
-        color="red darken-1"
-      >
-        <v-icon color="white" @click="$emit('deleteaccessories')">
-          mdi-delete
-        </v-icon>
-      </v-btn>
-    </v-fab-transition>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   data() {
     return {
       accessories: () => {},
     }
-  },
-  computed: {
-    ...mapState({
-      selected: state => state.selected.active
-    })
   },
   created() {
     this.loadFlags()

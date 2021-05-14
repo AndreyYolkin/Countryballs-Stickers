@@ -9,7 +9,7 @@
           <div class="tw-aspect-w-1 tw-aspect-h-1 tw-w-full tw-shadow">
             <v-badge
               color="pink"
-              content="alpha version"
+              :content="$t('app.alpha')"
               offset-x="90"
               offset-y="28"
             >
@@ -24,11 +24,25 @@
             @setflag="log($event), $refs.canvas.setFlag($event)"
             @seteye="log($event), $refs.canvas.setEye($event)"
             @addaccessory="log($event), $refs.canvas.addAccessory($event)"
-            @deleteaccessories="log($event), $refs.canvas.deleteAccessories()"
           />
         </div>
       </div>
     </v-container>
+    <v-fab-transition>
+      <v-btn
+        v-if="selected"
+        fab
+        fixed
+        left
+        bottom
+        color="red darken-1"
+        @click="$refs.canvas.deleteAccessories()"
+      >
+        <v-icon color="white">
+          {{ mdiDelete }}
+        </v-icon>
+      </v-btn>
+    </v-fab-transition>
     <v-speed-dial
       v-model="fab"
       right
@@ -38,12 +52,12 @@
       transition="slide-y-reverse-transition"
     >
       <template v-slot:activator>
-        <v-btn v-model="fab" color="primary" dark fab>
+        <v-btn v-model="fab" color="primary" fab>
           <v-icon v-if="fab">
-            mdi-close
+            {{ mdiClose }}
           </v-icon>
           <v-icon v-else>
-            mdi-content-save
+            {{ mdiContentSave }}
           </v-icon>
         </v-btn>
       </template>
@@ -51,48 +65,64 @@
         fab
         dark
         small
-        color="green"
-        @click="$refs.canvas.saveImage()"
+        color="light-green lighten-1"
+        @click="$refs.canvas.downloadImage(), randomShowInerstitital()"
       >
-        <v-icon>mdi-download</v-icon>
+        <v-icon>{{ mdiDownload }}</v-icon>
       </v-btn>
       <v-btn
         fab
         dark
         small
-        color="blue darken-3"
-        @click="$refs.canvas.shareImage()"
+        color="indigo lighten-1"
+        @click="$refs.canvas.shareImage(), randomShowInerstitital()"
       >
-        <v-icon>mdi-share-variant</v-icon>
+        <v-icon>{{ mdiShareVariant }}</v-icon>
       </v-btn>
     </v-speed-dial>
     <v-dialog v-model="dialog" max-width="400" scrollable>
       <v-card>
-        <v-card-title> This is the alpha version </v-card-title>
-        <v-card-text>
-          Yes, it's happenning. After 3 years I found a time to deal with this
-          application. This is the <b>first public version</b> with base
-          mechanics, like selecting countries, eyes, accessories and saving them
-          all.
-          <br>
-          <br>
-          There are a lot of things I need to implement, so I will be glad,
-          if you write me on e-mail listed in google play and give any usefull feedback.
-          Also if you can draw really beatiful accessories, write me too:)
-        </v-card-text>
+        <v-card-title>{{ $t('poster.title') }}</v-card-title>
+        <v-card-text v-html="$t('poster.text')" />
         <v-card-actions>
+          <v-btn
+            text
+            href="https://drive.google.com/file/d/1xfQT3GeHURunc-CQmO_2SXM4ZYSJ5df0/view?usp=sharing"
+          >
+            Privacy policy
+          </v-btn>
+          <v-spacer />
           <v-btn text color="success" @click="dialog = false">
-            Let's go!
+            {{ $t('poster.action') }}
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-snackbar
+      v-model="snackbar.active"
+      top
+    >
+      {{ snackbar.text }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          :color="snackbar.status"
+          text
+          v-bind="attrs"
+          @click="snackbar.active = false"
+        >
+          {{ $t('app.close') }}
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
+import { mdiClose, mdiContentSave, mdiDownload, mdiShareVariant, mdiDelete } from '@mdi/js'
 import Tabs from '@/components/Tabs'
 import Canvas from '@/components/Canvas'
+import { mapState } from 'vuex'
 import { AdMob, InterstitialAdPluginEvents } from '@capacitor-community/admob'
 
 export default {
@@ -105,21 +135,51 @@ export default {
     return {
       fab: false,
       dialog: true,
+      snackbar: {
+        active: false,
+        text: '',
+        status: ''
+      },
+      mdiClose,
+      mdiContentSave,
+      mdiDownload,
+      mdiShareVariant,
+      mdiDelete
     }
+  },
+  computed: {
+    ...mapState({
+      selected: state => state.selected.active
+    })
+  },
+  created () {
+    this.$store.watch(state => state.snackbar.text, () => {
+      const msg = this.$store.state.snackbar.text
+      if (msg !== '') {
+        this.snackbar.active = true
+        this.snackbar.text = this.$store.state.snackbar.text
+        this.snackbar.status = this.$store.state.snackbar.status
+        this.$store.commit('setSnackbar', { text: '' })
+      }
+    })
   },
   mounted() {
     setTimeout(this.showInterstitial, 15000)
+    AdMob.addListener(InterstitialAdPluginEvents.Loaded, (info) => {
+      console.log('prepared')
+    })
   },
   methods: {
     log(...data) {
       console.log('data:', ...data)
     },
+    randomShowInerstitital() {
+      Math.random() > 0.6 && this.showInterstitial()
+    },
     showInterstitial() {
-      AdMob.addListener(InterstitialAdPluginEvents.Loaded, (info) => {
-        console.log('prepared')
-      })
       const options = {
         adId: 'ca-app-pub-6875602682263539/7868651203',
+        // adId: 'ca-app-pub-3940256099942544/1033173712',
       }
       AdMob.prepareInterstitial(options).then(() => {
         AdMob.showInterstitial()

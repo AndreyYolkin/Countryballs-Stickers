@@ -7,21 +7,22 @@
       center-active
       show-arrows
       fixed-tabs
+      class="tw-flex-grow-0"
     >
       <v-tab>
-        <v-icon>mdi-web</v-icon>
+        <v-icon>{{ mdiWeb }}</v-icon>
       </v-tab>
       <v-tab>
-        <v-icon>mdi-eye</v-icon>
+        <v-icon>{{ mdiEye }}</v-icon>
       </v-tab>
       <v-tab disabled>
-        <v-icon>mdi-image</v-icon>
+        <v-icon>{{ mdiImage }}</v-icon>
       </v-tab>
       <v-tab>
-        <v-icon>mdi-puzzle</v-icon>
+        <v-icon>{{ mdiPuzzle }}</v-icon>
       </v-tab>
       <v-tab disabled>
-        <v-icon>mdi-format-size</v-icon>
+        <v-icon>{{ mdiFormatSize }}</v-icon>
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab" class="tw-overflow-y-auto">
@@ -45,10 +46,12 @@
 </template>
 
 <script>
+import { mdiWeb, mdiEye, mdiImage, mdiPuzzle, mdiFormatSize } from '@mdi/js'
 import TabFlag from './TabFlag'
 import TabBack from './TabBack'
 import TabEye from './TabEye'
 import TabAccessories from './TabAccessories.vue'
+
 export default {
   components: {
     TabFlag,
@@ -59,6 +62,11 @@ export default {
   data () {
     return {
       tab: 0,
+      mdiWeb,
+      mdiEye,
+      mdiImage,
+      mdiPuzzle,
+      mdiFormatSize
     }
   },
 }

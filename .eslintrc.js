@@ -25,6 +25,7 @@ module.exports = {
     'no-plusplus': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'vue/comment-directive': 'off'
+    'vue/comment-directive': 'off',
+    'vue/no-v-html': 'off'
   }
 }

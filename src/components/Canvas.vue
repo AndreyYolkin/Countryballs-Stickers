@@ -3,6 +3,9 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
+import { mapMutations } from 'vuex'
+
 import { fabric } from 'fabric'
 import { Share } from '@capacitor/share'
 import { Filesystem, Directory } from '@capacitor/filesystem'
@@ -41,6 +44,9 @@ export default {
     this.loadAccessories()
   },
   methods: {
+    ...mapMutations({
+      $setSnackBar: 'setSnackbar'
+    }),
     setBg(index) {
       const canvas = this.canvas
       fabric.Image.fromURL(this.getImgUrl(index), function (img) {
@@ -173,36 +179,44 @@ export default {
       canvas.setHeight(size)
       canvas.setZoom(size / 720)
     },
-    saveImage() {
-      download(this.canvas.toDataURL({ multiplier: 720 / this.canvas.width }))
-      function download(dataURL) {
+    _saveImage() {
+      return new Promise((resolve, reject) => {
+        Filesystem.writeFile({
+          path: `sticker_${dayjs().format('YYYY_MM_DDTHH_mm_ss')}.png`,
+          data: this.canvas.toDataURL({ multiplier: 720 / this.canvas.width }),
+          directory: Directory.Documents
+        })
+          .then(result => resolve(result))
+      })
+    },
+    _checkPermissions() {
+      return new Promise((resolve, reject) => {
         Filesystem.checkPermissions().then(response => {
           if (response && response.publicStorage === 'granted') {
-            Filesystem.writeFile({
-              path: 'output.png',
-              data: dataURL,
-              directory: Directory.Documents
-            })
+            resolve(true)
           } else if (response && response.publicStorage !== 'denied') {
             Filesystem.requestPermissions()
               .then(response => {
                 if (response && response.publicStorage === 'granted') {
-                  Filesystem.writeFile({
-                    path: 'output.png',
-                    data: dataURL,
-                    directory: Directory.Documents
-                  })
+                  resolve(true)
                 }
               })
           }
         })
-      }
+      })
     },
-    shareImage() {
+    async downloadImage() {
+      await this._checkPermissions()
+      await this._saveImage()
+      this.$setSnackBar({ text: this.$t('app.saved'), status: 'success' })
+    },
+    async shareImage() {
+      await this._checkPermissions()
+      const result = await this._saveImage()
       Share.share({
         title: 'See cool stuff',
         text: 'I\'ve made this using Countryballs Stickers',
-        url: 'http://ionicframework.com/',
+        url: result.uri,
         dialogTitle: 'Share with buddies',
       })
     }

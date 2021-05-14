@@ -13,19 +13,18 @@ export default new Vuex.Store({
       accessories: [],
     },
     app: {
-      continents: [
-        { text: 'Europe', value: 'EU' },
-        { text: 'Asia', value: 'AS' },
-        { text: 'America', value: 'AM' },
-        { text: 'Africa & Australia', value: 'AFAU' },
-        { text: 'Other', value: 'OT' },
-      ],
+      continents: ['EU', 'AS', 'AM', 'AFAU', 'OT'],
       continent: 'EU'
     },
     selected: {
       active: false,
       objects: {}
-    }
+    },
+    snackbar: {
+      active: false,
+      text: '',
+      status: ''
+    },
   }),
   mutations: {
     setFlag(state, data) {
@@ -43,6 +42,12 @@ export default new Vuex.Store({
     },
     setEye(state, data) {
       state.ball.flag = data
+    },
+    setSnackbar(state, data) {
+      state.snackbar = { ...data, active: true }
+    },
+    removeSnackbar(state) {
+      state.snackbar = { text: '', active: false }
     },
   },
   actions: {
