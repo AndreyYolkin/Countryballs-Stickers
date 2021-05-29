@@ -85,15 +85,41 @@
         <v-card-title>{{ $t('poster.title') }}</v-card-title>
         <v-card-text v-html="$t('poster.text')" />
         <v-card-actions>
-          <v-btn
-            text
-            href="https://drive.google.com/file/d/1xfQT3GeHURunc-CQmO_2SXM4ZYSJ5df0/view?usp=sharing"
-          >
-            Privacy policy
-          </v-btn>
           <v-spacer />
           <v-btn text color="success" @click="dialog = false">
             {{ $t('poster.action') }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="privacy" persistent max-width="400" scrollable>
+      <v-card>
+        <v-card-title class="tw-break-normal">
+          {{ $t('privacy.title') }}
+        </v-card-title>
+        <v-card-text>
+          {{ $t('privacy.text') }}
+          <v-btn
+            class="mt-2"
+            depressed
+            href="https://drive.google.com/file/d/1xfQT3GeHURunc-CQmO_2SXM4ZYSJ5df0/view?usp=sharing"
+          >
+            <v-icon left small>
+              {{ mdiOpenInNew }}
+            </v-icon>
+            Privacy policy
+          </v-btn>
+          <v-switch v-model="agree" inset :label="$t('privacy.agree')" />
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            text
+            color="success"
+            :disabled="!agree"
+            @click="privacy = false, saveAgreement()"
+          >
+            {{ $t('privacy.action') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -119,11 +145,12 @@
 </template>
 
 <script>
-import { mdiClose, mdiContentSave, mdiDownload, mdiShareVariant, mdiDelete } from '@mdi/js'
+import { mdiClose, mdiContentSave, mdiDownload, mdiShareVariant, mdiDelete, mdiOpenInNew } from '@mdi/js'
 import Tabs from '@/components/Tabs'
 import Canvas from '@/components/Canvas'
 import { mapState } from 'vuex'
 import { AdMob, InterstitialAdPluginEvents } from '@capacitor-community/admob'
+import { Storage } from '@capacitor/storage'
 
 export default {
   name: 'App',
@@ -134,7 +161,9 @@ export default {
   data() {
     return {
       fab: false,
-      dialog: true,
+      dialog: false,
+      privacy: true,
+      agree: false,
       snackbar: {
         active: false,
         text: '',
@@ -144,7 +173,8 @@ export default {
       mdiContentSave,
       mdiDownload,
       mdiShareVariant,
-      mdiDelete
+      mdiDelete,
+      mdiOpenInNew
     }
   },
   computed: {
@@ -152,7 +182,23 @@ export default {
       selected: state => state.selected.active
     })
   },
+  watch: {
+    privacy() {
+      if (!this.privacy) {
+        this.dialog = true
+      }
+    }
+  },
   created () {
+    Storage.get({ key: 'privacy' })
+      .then(result => {
+        console.log(result)
+        if (result.value === 'undefined' || result.value === 'false') {
+          this.privacy = true
+        } else if (result.value === 'true') {
+          this.privacy = false
+        }
+      })
     this.$store.watch(state => state.snackbar.text, () => {
       const msg = this.$store.state.snackbar.text
       if (msg !== '') {
@@ -172,6 +218,9 @@ export default {
   methods: {
     log(...data) {
       console.log('data:', ...data)
+    },
+    saveAgreement() {
+      Storage.set({ key: 'privacy', value: 'true' })
     },
     randomShowInerstitital() {
       Math.random() > 0.6 && this.showInterstitial()

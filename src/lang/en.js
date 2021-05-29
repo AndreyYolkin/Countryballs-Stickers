@@ -24,5 +24,11 @@ export default {
     if you write me on e-mail listed in google play and give any usefull feedback.
     Also if you can draw really beatiful accessories, write me too:)`,
     action: 'Let\'s go!'
+  },
+  privacy: {
+    title: 'Privacy policy',
+    text: 'Before using this application, you must read and agree with Privacy policy',
+    agree: 'I have read and agree with the Privacy policy',
+    action: 'Ok'
   }
 }

@@ -24,5 +24,11 @@ export default {
     si me escribe en el correo electrónico que aparece en Google Play y da algún comentario útil
     Además, si puedes dibujar accesorios realmente bonitos, escríbeme también :)`,
     action: '¡Vamos!'
+  },
+  privacy: {
+    title: 'Política de privacidad',
+    text: 'Antes de utilizar esta aplicación, debe leer y aceptar la política de privacidad.',
+    agree: 'He leido y estoy de acuerdo con la politica de privacidad',
+    action: 'Ok'
   }
 }
