@@ -1,15 +1,19 @@
 <template>
   <div class="tw-relative tw-w-full">
-    <div class="tw-pt-4 tw-px-3 tw-bg-white">
+    <div class="tw-pt-4 tw-px-3 tw-flex tw-gap-2 tw-items-center tw-bg-white">
       <v-select
         v-model="continent"
         :label="$t('app.continentLabel')"
         item-value="value"
         item-text="text"
         filled
+        dense
         hide-details
         :items="continents"
       />
+      <v-btn text @click="$emit('custom')">
+        custom
+      </v-btn>
     </div>
     <v-item-group>
       <v-container fluid>

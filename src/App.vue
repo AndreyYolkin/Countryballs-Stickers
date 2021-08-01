@@ -24,6 +24,7 @@
             @setflag="log($event), $refs.canvas.setFlag($event)"
             @seteye="log($event), $refs.canvas.setEye($event)"
             @addaccessory="log($event), $refs.canvas.addAccessory($event)"
+            @custom="openCustomDialog($event)"
           />
         </div>
       </div>
@@ -80,6 +81,17 @@
         <v-icon>{{ mdiShareVariant }}</v-icon>
       </v-btn>
     </v-speed-dial>
+    <v-dialog
+      v-model="customDialog"
+      @click:outside="updatePhoto(), $refs.customDialog && $refs.customDialog.stopCameraStream()"
+    >
+      <CustomImage
+        ref="customDialog"
+        :type="customType"
+        :openhash="Math.random()"
+        @closeDialog="customDialog=false, updatePhoto(), $refs.customDialog && $refs.customDialog.stopCameraStream()"
+      />
+    </v-dialog>
     <v-dialog v-model="dialog" max-width="400" scrollable>
       <v-card>
         <v-card-title>{{ $t('poster.title') }}</v-card-title>
@@ -147,6 +159,7 @@
 <script>
 import { mdiClose, mdiContentSave, mdiDownload, mdiShareVariant, mdiDelete, mdiOpenInNew } from '@mdi/js'
 import Tabs from '@/components/Tabs'
+import CustomImage from '@/components/CustomImage'
 import Canvas from '@/components/Canvas'
 import { mapState } from 'vuex'
 import { AdMob, InterstitialAdPluginEvents } from '@capacitor-community/admob'
@@ -157,6 +170,7 @@ export default {
   components: {
     Tabs,
     Canvas,
+    CustomImage,
   },
   data() {
     return {
@@ -169,6 +183,9 @@ export default {
         text: '',
         status: ''
       },
+      customDialog: false,
+      customType: '',
+
       mdiClose,
       mdiContentSave,
       mdiDownload,
@@ -233,6 +250,13 @@ export default {
       AdMob.prepareInterstitial(options).then(() => {
         AdMob.showInterstitial()
       })
+    },
+    openCustomDialog(type) {
+      this.customType = type
+      this.customDialog = true
+    },
+    updatePhoto() {
+      return null
     }
   },
 }

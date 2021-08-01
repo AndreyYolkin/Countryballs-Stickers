@@ -27,7 +27,7 @@
     </v-tabs>
     <v-tabs-items v-model="tab" class="tw-overflow-y-auto">
       <v-tab-item>
-        <TabFlag @setflag="$emit('setflag', $event)" />
+        <TabFlag @setflag="$emit('setflag', $event)" @custom="$emit('custom', 'flag')" />
       </v-tab-item>
       <v-tab-item>
         <TabEye @seteye="$emit('seteye', $event)" />
