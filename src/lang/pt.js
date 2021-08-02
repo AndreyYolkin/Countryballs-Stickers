@@ -10,7 +10,9 @@ export default {
       AFAU: 'África e Austrália',
       OT: 'Outras bandeiras'
     },
-    continentLabel: 'Continente'
+    continentLabel: 'Continente',
+    custom: 'Ter',
+    save: 'Salve'
   },
   poster: {
     title: 'Esta é a versão alfa',

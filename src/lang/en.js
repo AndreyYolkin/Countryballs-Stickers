@@ -10,7 +10,9 @@ export default {
       AFAU: 'Africa & Australia',
       OT: 'Other'
     },
-    continentLabel: 'Continent'
+    continentLabel: 'Continent',
+    custom: 'Own',
+    save: 'Save'
   },
   poster: {
     title: 'This is the alpha version',

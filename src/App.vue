@@ -82,13 +82,14 @@
       </v-btn>
     </v-speed-dial>
     <v-dialog
+      max-width="600"
       v-model="customDialog"
       @click:outside="updatePhoto(), $refs.customDialog && $refs.customDialog.stopCameraStream()"
     >
       <CustomImage
         ref="customDialog"
         :type="customType"
-        :openhash="Math.random()"
+        @setflag="$refs.canvas.setFlag($event)"
         @closeDialog="customDialog=false, updatePhoto(), $refs.customDialog && $refs.customDialog.stopCameraStream()"
       />
     </v-dialog>
@@ -209,7 +210,6 @@ export default {
   created () {
     Storage.get({ key: 'privacy' })
       .then(result => {
-        console.log(result)
         if (result.value === 'undefined' || result.value === 'false') {
           this.privacy = true
         } else if (result.value === 'true') {

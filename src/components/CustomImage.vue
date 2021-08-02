@@ -1,5 +1,13 @@
 <template>
   <v-card>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn icon @click="$emit('closeDialog')">
+        <v-icon>
+          {{ mdiClose }}
+        </v-icon>
+      </v-btn>
+    </v-card-actions>
     <v-card-text class="overflow-y-hidden dialog__list">
       <Cropper
         v-if="showCropper && !isCamera"
@@ -7,76 +15,15 @@
         :src="image"
         :auto-zoom="true"
         :transitions="true"
-        :stencil-props="{
-          aspectRatio: 3/4,
-          minAspectRatio:3/4,
-          maxAspectRatio:9/16,
-          resizable: true,
-          class: 'cropper-stencil cropper-stencil--dragging',
-          previewClass: 'cropper-stencil__preview',
-          handlersClasses: {
-            default: 'cropper-handler',
-            eastNorth: 'cropper-handler--east-north',
-            westNorth: 'cropper-handler--west-north',
-            eastSouth: 'cropper-handler--east-south',
-            westSouth: 'cropper-handler--west-south',
-          },
-          handlersWrappersClasses: {
-            default: 'cropper-handler-wrapper',
-            eastNorth: 'cropper-handler-wrapper--east-north',
-            westNorth: 'cropper-handler-wrapper--west-north',
-            eastSouth: 'cropper-handler-wrapper--east-south',
-            westSouth: 'cropper-handler-wrapper--west-south',
-          },
-        }"
+        :stencil-component="stencil"
         @change="onChange"
       />
-      <v-container v-if="isCamera">
-        <v-row align="center" justify="center">
-          <v-col cols="auto">
-            <video
-              v-show="!isPhotoTaken"
-              id="camVideo"
-              ref="camera"
-              :width="640"
-              :height="480"
-              autoplay
-            />
-            <canvas
-              v-show="isPhotoTaken"
-              ref="canvas"
-              :width="640"
-              :height="480"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
     </v-card-text>
-    <v-card-actions v-if="isCamera">
-      <v-btn color="secondary" text @click="toggleCamera()">
-        Выключить камеру
-      </v-btn>
-      <v-spacer v-if="!isPhotoTaken" />
-      <v-btn v-if="!isPhotoTaken" color="success" text @click="takePhoto">
-        Сделать фото
-      </v-btn>
-      <v-spacer v-if="isPhotoTaken" />
-      <v-btn
-        v-if="isPhotoTaken"
-        color="primary"
-        text
-        @click="isPhotoTaken =! isPhotoTaken"
-      >
-        Сбросить
-      </v-btn>
-      <v-spacer v-if="isPhotoTaken" />
-      <v-btn v-if="isPhotoTaken" color="success" text @click="acceptPhoto()">
-        Продолжить
-      </v-btn>
-    </v-card-actions>
-    <v-card-actions v-if="!isCamera">
-      <v-btn color="primary" text @click="$refs.file.click()">
-        Загрузить
+    <v-card-actions>
+      <v-btn color="primary" icon @click="$refs.file.click()">
+        <v-icon>
+          {{ mdiFileUpload }}
+        </v-icon>
       </v-btn>
       <input
         ref="file"
@@ -85,22 +32,9 @@
         accept="image/*"
         @change="loadImage($event)"
       >
-      <Confirm
-        text="Вы действительно хотите удалить фото?"
-        confirm-text="Удалить"
-        confirm-color="remove white--text"
-        @confirm="deleteImage()"
-      >
-        <v-btn color="remove" text>
-          Удалить фото
-        </v-btn>
-      </Confirm>
       <v-spacer />
-      <v-btn color="primary" text @click="$emit('closeDialog')">
-        Закрыть
-      </v-btn>
       <v-btn color="success" text @click="uploadImage()">
-        Сохранить
+        {{ $t('app.save') }}
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -108,14 +42,14 @@
 
 <script>
 import { Cropper } from 'vue-advanced-cropper'
-import { mapActions, mapMutations } from 'vuex'
+import { mdiClose, mdiFileUpload } from '@mdi/js'
+import { mapMutations } from 'vuex'
 import 'vue-advanced-cropper/dist/style.css'
-import Confirm from './Confirm.vue'
+import CircleStencil from './CircleStencil'
 
 export default {
   components: {
-    Cropper,
-    Confirm,
+    Cropper
   },
   props: {
     type: {
@@ -125,11 +59,14 @@ export default {
   },
   data: () => ({
     coordinates: {},
-    image: null,
+    image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAALQAQMAAACDmdXfAAAAA1BMVEX///+nxBvIAAAAYklEQVR42uzBgQAAAACAoP2pF6kCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOD24EAAAAAAQJC/9SBXAAAAAEsB//AAASF4jxUAAAAASUVORK5CYII=',
     croppedImage: null,
-    showCropper: false,
+    showCropper: true,
     isCamera: false,
     isPhotoTaken: false,
+    stencil: CircleStencil,
+    mdiClose,
+    mdiFileUpload
   }),
   computed: {
     touch() {
@@ -138,7 +75,6 @@ export default {
   },
   watch: {
     openhash: {
-      immediate: true,
       handler(newVal, oldVal) {
         this.showCropper = false
         this.getImage()
@@ -151,9 +87,6 @@ export default {
   methods: {
     ...mapMutations({
       $setSnackbar: 'setSnackbar',
-    }),
-    ...mapActions({
-      $uploadImage: 'people/uploadImage',
     }),
     getImage () {
       // let temp_image = null
@@ -199,6 +132,7 @@ export default {
       }
     },
     uploadImage() {
+      this.$emit('setflag', { url: this.croppedImage })
       this.$emit('closeDialog')
     },
     deleteImage() {
@@ -224,7 +158,7 @@ export default {
         .then(stream => {
           this.$refs.camera.srcObject = stream
         }).catch((err) => {
-          console.log(err) /* handle the error */
+          console.log(err)
           if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
             this.$setSnackbar({ text: 'Возможно не подключена камера', status: 'error' })
           } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
@@ -280,122 +214,15 @@ export default {
 </script>
 
 <style lang="scss">
+.vue-advanced-cropper {
+  max-height: 400px;
+}
 .cropper {
   &__image {
     opacity: 0.3;
   }
 }
-
-.cropper-stencil {
-  &__preview {
-    &:after,
-    &:before {
-      content: "";
-      opacity: 0;
-      transition: opacity 0.25s;
-      position: absolute;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    &:after {
-      border-left: solid 1px white;
-      border-right: solid 1px white;
-      width: 33%;
-      height: 100%;
-      transform: translateX(-50%);
-      left: 50%;
-      top: 0;
-    }
-
-    &:before {
-      border-top: solid 1px white;
-      border-bottom: solid 1px white;
-      height: 33%;
-      width: 100%;
-      transform: translateY(-50%);
-      top: 50%;
-      left: 0;
-    }
-  }
-
-  &--dragging {
-    .cropper-stencil__preview {
-      &:after,
-      &:before {
-        opacity: 1;
-      }
-    }
-  }
-}
-
-.cropper-line {
-  border-color: rgba(white, 1);
-}
-
-.cropper-handler-wrapper {
-  width: 24px;
-  height: 24px;
-  &--west-north {
-    transform: translate(0, 0);
-  }
-  &--east-south {
-    transform: translate(-100%, -100%);
-  }
-  &--west-south {
-    transform: translate(0, -100%);
-  }
-  &--east-north {
-    transform: translate(-100%, 0);
-  }
-}
-
-.cropper-handler {
-  display: block;
-  position: relative;
-  flex-shrink: 0;
-  transition: opacity 0.5s;
-  border: none;
-  background: white;
-  height: 4px;
-  width: 4px;
-  opacity: 0;
-  top: auto;
-  left: auto;
-
-  &--west-north,
-  &--east-south,
-  &--west-south,
-  &--east-north {
-    display: block;
-    height: 16px;
-    width: 16px;
-    background: none;
-    opacity: 0.7;
-  }
-
-  &--west-north {
-    border-left: solid 2px white;
-    border-top: solid 2px white;
-  }
-
-  &--east-south {
-    border-right: solid 2px white;
-    border-bottom: solid 2px white;
-  }
-
-  &--west-south {
-    border-left: solid 2px white;
-    border-bottom: solid 2px white;
-  }
-
-  &--east-north {
-    border-right: solid 2px white;
-    border-top: solid 2px white;
-  }
-
-  &--hover {
-    opacity: 1;
-  }
+.vue-advanced-cropper__background, .vue-advanced-cropper__foreground {
+  background: rgb(255, 255, 255);
 }
 </style>

@@ -12,7 +12,7 @@
         :items="continents"
       />
       <v-btn text @click="$emit('custom')">
-        custom
+        {{ $t('app.custom') }}
       </v-btn>
     </div>
     <v-item-group>

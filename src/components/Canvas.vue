@@ -21,7 +21,7 @@ export default {
       eye: {}
     }
   },
-  mounted() {
+  async mounted() {
     const ref = this.$refs.can
     this.canvas = new fabric.Canvas(ref)
     this.fitToContainer(this.canvas)
@@ -34,7 +34,7 @@ export default {
         this.$store.commit('setSelected', { active: false })
       })
     })
-    this.initFlag()
+    await this.initFlag()
     this.initStroke()
     this.initEye()
   },
@@ -86,9 +86,15 @@ export default {
       })
     },
     setFlag(event) {
-      const { index, continent } = event
+      const { index, continent, url } = event
       const canvas = this.canvas
-      this.flag.setSrc(this.getFlagURL(index, continent), canvas.renderAll.bind(canvas))
+      if (url) {
+        this.cropFlag(url).then(flag => {
+          this.flag.setSrc(flag, canvas.renderAll.bind(canvas))
+        })
+      } else {
+        this.flag.setSrc(this.getFlagURL(index, continent), canvas.renderAll.bind(canvas))
+      }
     },
     setEye(event) {
       const { index } = event
@@ -96,20 +102,45 @@ export default {
       this.eye.setSrc(this.getEyeURL(index), canvas.renderAll.bind(canvas))
     },
     initFlag() {
-      const canvas = this.canvas
-      fabric.Image.fromURL(this.getFlagURL(0, 'EU'), (myImg) => {
-        this.flag = myImg
-        const scaleFactor = canvas.height / myImg.height
-        const img = myImg.set({
-          left: 360,
-          top: 360,
-          originX: 'center',
-          originY: 'center',
-          scaleX: scaleFactor * 0.75 / canvas.getZoom(),
-          scaleY: scaleFactor * 0.75 / canvas.getZoom(),
-          selectable: false
+      return new Promise(resolve => {
+        const canvas = this.canvas
+        fabric.Image.fromURL(this.getFlagURL(0, 'EU'), (myImg) => {
+          this.flag = myImg
+          const scaleFactor = canvas.height / myImg.height
+          const img = myImg.set({
+            left: 360,
+            top: 360,
+            originX: 'center',
+            originY: 'center',
+            scaleX: scaleFactor * 0.75 / canvas.getZoom(),
+            scaleY: scaleFactor * 0.75 / canvas.getZoom(),
+            selectable: false
+          })
+          canvas.add(img)
+          resolve()
         })
-        canvas.add(img)
+      })
+    },
+    cropFlag(src) {
+      return new Promise(resolve => {
+        const canvas = document.createElement('canvas')
+        canvas.height = 720
+        canvas.width = 720
+        const ctx = canvas.getContext('2d')
+        ctx.fillStyle = 'white'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        const img = new Image()
+        img.onload = start
+        img.src = src
+        function start() {
+          ctx.drawImage(img, 0, 0, 720, 720)
+          ctx.globalCompositeOperation = 'destination-in'
+          ctx.beginPath()
+          ctx.arc(360, 360, 360, 0, Math.PI * 2)
+          ctx.closePath()
+          ctx.fill()
+          resolve(canvas.toDataURL())
+        }
       })
     },
     initStroke() {
