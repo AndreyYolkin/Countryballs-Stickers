@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">countryballs</string>
-    <string name="title_activity_main">countryballs</string>
+    <string name="app_name">Countryballs</string>
+    <string name="title_activity_main">Countryballs</string>
     <string name="package_name">com.buggames.countryballs</string>
     <string name="custom_url_scheme">com.buggames.countryballs</string>
     <string name="admob_app_id">ca-app-pub-6875602682263539~9661612007</string>

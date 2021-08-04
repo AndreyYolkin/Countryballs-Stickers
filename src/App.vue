@@ -105,7 +105,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="privacy" persistent max-width="400" scrollable>
+    <!--<v-dialog v-model="privacy" persistent max-width="400" scrollable>
       <v-card>
         <v-card-title class="tw-break-normal">
           {{ $t('privacy.title') }}
@@ -136,7 +136,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog>-->
     <v-snackbar
       v-model="snackbar.active"
       top
@@ -163,7 +163,7 @@ import Tabs from '@/components/Tabs'
 import CustomImage from '@/components/CustomImage'
 import Canvas from '@/components/Canvas'
 import { mapState } from 'vuex'
-import { AdMob, InterstitialAdPluginEvents } from '@capacitor-community/admob'
+import { AdMob, InterstitialAdPluginEvents, BannerAdSize, BannerAdPosition, BannerAdPluginEvents } from '@capacitor-community/admob'
 import { Storage } from '@capacitor/storage'
 
 export default {
@@ -231,6 +231,9 @@ export default {
     AdMob.addListener(InterstitialAdPluginEvents.Loaded, (info) => {
       console.log('prepared')
     })
+    AdMob.addListener(BannerAdPluginEvents.Loaded, (info) => {
+      this.showBanner()
+    })
   },
   methods: {
     log(...data) {
@@ -245,11 +248,18 @@ export default {
     showInterstitial() {
       const options = {
         adId: 'ca-app-pub-6875602682263539/7868651203',
-        // adId: 'ca-app-pub-3940256099942544/1033173712',
       }
       AdMob.prepareInterstitial(options).then(() => {
         AdMob.showInterstitial()
       })
+    },
+    showBanner() {
+      const options = {
+        adId: 'ca-app-pub-6875602682263539/5091811600',
+        adSize: BannerAdSize.ADAPTIVE_BANNER,
+        position: BannerAdPosition.BOTTOM_CENTER,
+      }
+      AdMob.showBanner(options)
     },
     openCustomDialog(type) {
       this.customType = type

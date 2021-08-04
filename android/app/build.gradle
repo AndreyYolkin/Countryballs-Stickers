@@ -6,7 +6,7 @@ android {
         applicationId "com.buggames.countryballs"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 300004
+        versionCode 300005
         versionName '3.0.0-a'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
