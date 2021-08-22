@@ -20,10 +20,10 @@
         <div class="tw-col-span-1">
           <Tabs
             class="tw-h-full tw-max-h-screen tw-flex tw-flex-col"
-            @setbg="log($event), $refs.canvas.setBg($event)"
-            @setflag="log($event), $refs.canvas.setFlag($event)"
-            @seteye="log($event), $refs.canvas.setEye($event)"
-            @addaccessory="log($event), $refs.canvas.addAccessory($event)"
+            @setback="$refs.canvas.setBack($event)"
+            @setflag="$refs.canvas.setFlag($event)"
+            @seteye="$refs.canvas.setEye($event)"
+            @addaccessory="$refs.canvas.addAccessory($event)"
             @custom="openCustomDialog($event)"
           />
         </div>
@@ -90,6 +90,7 @@
         ref="customDialog"
         :type="customType"
         @setflag="$refs.canvas.setFlag($event)"
+        @setback="$refs.canvas.setBack($event)"
         @closeDialog="customDialog=false, updatePhoto(), $refs.customDialog && $refs.customDialog.stopCameraStream()"
       />
     </v-dialog>

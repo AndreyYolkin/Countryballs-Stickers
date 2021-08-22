@@ -123,7 +123,7 @@ export default {
     align-items: center;
     justify-content: center;
     transform: translate(50%, -50%);
-    user-drag: none;
+    -webkit-user-drag: none;
   }
   &__preview {
     border-radius: 50%;

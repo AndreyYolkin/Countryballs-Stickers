@@ -15,14 +15,14 @@
       <v-tab>
         <v-icon>{{ mdiEye }}</v-icon>
       </v-tab>
-      <v-tab disabled>
+      <v-tab>
         <v-icon>{{ mdiImage }}</v-icon>
       </v-tab>
       <v-tab>
         <v-icon>{{ mdiPuzzle }}</v-icon>
       </v-tab>
       <v-tab disabled>
-        <v-icon>{{ mdiFormatSize }}</v-icon>
+        <v-icon>{{ mdiCog }}</v-icon>
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab" class="tw-overflow-y-auto">
@@ -32,29 +32,31 @@
       <v-tab-item>
         <TabEye @seteye="$emit('seteye', $event)" />
       </v-tab-item>
-      <v-tab-item disabled>
-        <TabBack @setbg="$emit('setbg', $event)" />
+      <v-tab-item>
+        <TabBack @setback="$emit('setback', $event)" @custom="$emit('custom', 'back')" />
       </v-tab-item>
       <v-tab-item>
         <TabAccessories @addaccessory="$emit('addaccessory', $event)" @deleteaccessories="$emit('deleteaccessories')" />
       </v-tab-item>
       <v-tab-item disabled>
-        <div>Not ready yet</div>
+        <TabSettings />
       </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 
 <script>
-import { mdiWeb, mdiEye, mdiImage, mdiPuzzle, mdiFormatSize } from '@mdi/js'
-import TabFlag from './TabFlag'
-import TabBack from './TabBack'
-import TabEye from './TabEye'
+import { mdiWeb, mdiEye, mdiImage, mdiPuzzle, mdiCog } from '@mdi/js'
+import TabFlag from './TabFlag.vue'
+import TabBack from './TabBack.vue'
+import TabSettings from './TabSettings.vue'
+import TabEye from './TabEye.vue'
 import TabAccessories from './TabAccessories.vue'
 
 export default {
   components: {
     TabFlag,
+    TabSettings,
     TabBack,
     TabEye,
     TabAccessories
@@ -66,7 +68,7 @@ export default {
       mdiEye,
       mdiImage,
       mdiPuzzle,
-      mdiFormatSize
+      mdiCog
     }
   },
 }

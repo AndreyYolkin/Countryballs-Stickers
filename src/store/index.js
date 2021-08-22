@@ -14,7 +14,9 @@ export default new Vuex.Store({
     },
     app: {
       continents: ['EU', 'AS', 'AM', 'AFAU', 'OT'],
-      continent: 'EU'
+      continent: 'EU',
+      backgrounds: ['transparent', 'color', 'BO', 'GE', 'ME'],
+      background: 'transparent'
     },
     selected: {
       active: false,
@@ -32,6 +34,9 @@ export default new Vuex.Store({
     },
     setContinent(state, continent) {
       state.app.continent = continent
+    },
+    setBackground(state, background) {
+      state.app.background = background
     },
     setSelected(state, data) {
       state.selected.active = data.active

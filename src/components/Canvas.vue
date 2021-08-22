@@ -13,12 +13,15 @@ import { Filesystem, Directory } from '@capacitor/filesystem'
 export default {
   data () {
     return {
-      canvas: {},
-      allFlags: {},
-      eyes: {},
-      accessories: {},
-      flag: {},
-      eye: {}
+      canvas: () => {},
+      allFlags: () => {},
+      allBacks: () => {},
+      eyes: () => {},
+      accessories: () => {},
+      flag: () => {},
+      back: () => {},
+      eye: () => {},
+      stroke: () => {}
     }
   },
   async mounted() {
@@ -40,6 +43,7 @@ export default {
   },
   created() {
     this.loadFlags()
+    this.loadBacks()
     this.loadEyes()
     this.loadAccessories()
   },
@@ -47,20 +51,6 @@ export default {
     ...mapMutations({
       $setSnackBar: 'setSnackbar'
     }),
-    setBg(index) {
-      const canvas = this.canvas
-      fabric.Image.fromURL(this.getImgUrl(index), function (img) {
-        const scaleFactor = canvas.height / img.height
-        canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
-          left: 0,
-          top: 0,
-          originX: 'left',
-          originY: 'top',
-          scaleX: scaleFactor / canvas.getZoom(),
-          scaleY: scaleFactor / canvas.getZoom(),
-        })
-      })
-    },
     deleteAccessories() {
       const canvas = this.canvas
       canvas.getActiveObjects().forEach((obj) => {
@@ -100,6 +90,32 @@ export default {
       const { index } = event
       const canvas = this.canvas
       this.eye.setSrc(this.getEyeURL(index), canvas.renderAll.bind(canvas))
+    },
+    setBack(event) {
+      const canvas = this.canvas
+      const { index, pack, url } = event
+      if (url) {
+        this.cropBack(url).then(img => {
+          canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+            left: 0,
+            top: 0,
+            originX: 'left',
+            originY: 'top',
+          })
+        })
+      } else {
+        fabric.Image.fromURL(this.getBackURL(index, pack), function (img) {
+          const scaleFactor = canvas.height / img.height
+          canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+            left: 0,
+            top: 0,
+            originX: 'left',
+            originY: 'top',
+            scaleX: scaleFactor / canvas.getZoom(),
+            scaleY: scaleFactor / canvas.getZoom(),
+          })
+        })
+      }
     },
     initFlag() {
       return new Promise(resolve => {
@@ -143,10 +159,28 @@ export default {
         }
       })
     },
+    cropBack(src) {
+      return new Promise(resolve => {
+        const canvas = document.createElement('canvas')
+        canvas.height = 720
+        canvas.width = 720
+        const ctx = canvas.getContext('2d')
+        ctx.fillStyle = 'white'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        const img = new Image()
+        img.onload = start
+        img.src = src
+        function start() {
+          ctx.drawImage(img, 0, 0, 720, 720)
+          resolve(canvas.toDataURL())
+        }
+      })
+    },
     initStroke() {
       const canvas = this.canvas
       const stroke = require.context('../assets/strokes', false, /\.png$/)('./circle.png')
       fabric.Image.fromURL(stroke, (myImg) => {
+        this.stroke = myImg
         const scaleFactor = canvas.height / myImg.height
         const img = myImg.set({
           left: 355,
@@ -158,6 +192,10 @@ export default {
           selectable: false,
         })
         canvas.add(img)
+        // setTimeout(() => {
+        //   this.stroke.set('scaleX', scaleFactor * -0.76 / canvas.getZoom()).set('left', 365)
+        //   canvas.renderAll.bind(canvas)
+        // }, 3000)
       })
     },
     initEye() {
@@ -176,6 +214,13 @@ export default {
         })
         canvas.add(img)
       })
+    },
+    loadBacks() {
+      this.allBacks = {
+        BO: require.context('../assets/backs/BG_BO', false, /\.png$/),
+        GE: require.context('../assets/backs/BG_GE', false, /\.png$/),
+        ME: require.context('../assets/backs/BG_ME', false, /\.png$/),
+      }
     },
     loadFlags() {
       this.allFlags = {
@@ -201,8 +246,8 @@ export default {
     getFlagURL(index, continent) {
       return this.allFlags[continent]('./' + index.toString().padStart(3, 0) + '.png')
     },
-    getImgUrl(index) {
-      return this.flags('./' + index.toString().padStart(3, 0) + '.png')
+    getBackURL(index, pack) {
+      return this.allBacks[pack]('./' + index.toString().padStart(3, 0) + '.png')
     },
     fitToContainer(canvas) {
       const size = this.$refs.can.parentNode.clientWidth

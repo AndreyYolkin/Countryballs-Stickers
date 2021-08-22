@@ -45,7 +45,8 @@ import { Cropper } from 'vue-advanced-cropper'
 import { mdiClose, mdiFileUpload } from '@mdi/js'
 import { mapMutations } from 'vuex'
 import 'vue-advanced-cropper/dist/style.css'
-import CircleStencil from './CircleStencil'
+import CircleStencil from './CircleStencil.vue'
+import SquareStencil from './SquareStencil.vue'
 
 export default {
   components: {
@@ -64,13 +65,21 @@ export default {
     showCropper: true,
     isCamera: false,
     isPhotoTaken: false,
-    stencil: CircleStencil,
     mdiClose,
     mdiFileUpload
   }),
   computed: {
     touch() {
       return matchMedia('(hover: none), (pointer: coarse)').matches
+    },
+    stencil() {
+      if (this.type === 'flag') {
+        return CircleStencil
+      }
+      if (this.type === 'back') {
+        return SquareStencil
+      }
+      return undefined
     }
   },
   watch: {
@@ -132,7 +141,12 @@ export default {
       }
     },
     uploadImage() {
-      this.$emit('setflag', { url: this.croppedImage })
+      if (this.type === 'flag') {
+        this.$emit('setflag', { url: this.croppedImage })
+      }
+      if (this.type === 'back') {
+        this.$emit('setback', { url: this.croppedImage })
+      }
       this.$emit('closeDialog')
     },
     deleteImage() {

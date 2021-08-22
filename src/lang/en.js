@@ -10,16 +10,22 @@ export default {
       AFAU: 'Africa & Australia',
       OT: 'Other'
     },
+    backgrounds: {
+      transparent: 'Transparent',
+      color: 'Colored',
+      BO: 'Legacy: Boho',
+      GE: 'Legacy: Geometry',
+      ME: 'Legacy: Memphis',
+    },
     continentLabel: 'Continent',
+    backgroundLabel: 'Background',
     custom: 'Own',
     save: 'Save'
   },
   poster: {
     title: 'This is the alpha version',
     text: `Yes, it's happenning. After 3 years I found a time to deal with this
-    application. This is the <b>first public version</b> with base
-    mechanics, like selecting countries, eyes, accessories and saving them
-    all.
+    application.
     <br>
     <br>
     There are a lot of things I need to implement, so I will be glad,
