@@ -6,11 +6,12 @@
         :label="$t('app.backgroundLabel')"
         item-value="value"
         item-text="text"
-        filled
+        outlined
+        dense
         hide-details
         :items="backgrounds"
       />
-      <v-btn text @click="$emit('custom')">
+      <v-btn outlined height="40" color="primary" @click="$emit('custom')">
         {{ $t('app.custom') }}
       </v-btn>
     </div>

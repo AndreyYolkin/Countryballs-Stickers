@@ -13,6 +13,9 @@ export default {
     backgrounds: {
       transparent: 'Прозорі',
       color: 'Кольорові',
+      BO: 'Legacy: Boho',
+      GE: 'Legacy: Geometry',
+      ME: 'Legacy: Memphis',
     },
     continentLabel: 'Континент',
     backgroundLabel: 'Фон',

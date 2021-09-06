@@ -13,6 +13,9 @@ export default {
     backgrounds: {
       transparent: 'Transparente',
       color: 'Colori',
+      BO: 'Legacy: Boho',
+      GE: 'Legacy: Geometry',
+      ME: 'Legacy: Memphis',
     },
     continentLabel: 'Continente',
     backgroundLabel: 'Fundo',

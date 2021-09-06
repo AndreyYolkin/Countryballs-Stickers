@@ -6,7 +6,8 @@ import store from './store'
 
 import './assets/styles/tw.css'
 import vuetify from './plugins/vuetify'
-import 'roboto-fontface/css/roboto/roboto-fontface.css'
+import '@fontsource/rubik/variable.css'
+
 import i18n from './i18n'
 
 Vue.config.productionTip = false

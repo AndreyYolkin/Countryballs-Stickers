@@ -2,7 +2,7 @@
   <div>
     <v-tabs
       v-model="tab"
-      background-color="#f0f0f0"
+      background-color="#fafafa"
       color="primary"
       center-active
       show-arrows

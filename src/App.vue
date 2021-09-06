@@ -66,7 +66,7 @@
         fab
         dark
         small
-        color="light-green lighten-1"
+        color="#5567EC"
         @click="$refs.canvas.downloadImage(), randomShowInerstitital()"
       >
         <v-icon>{{ mdiDownload }}</v-icon>
@@ -75,7 +75,7 @@
         fab
         dark
         small
-        color="indigo lighten-1"
+        color="#5567EC"
         @click="$refs.canvas.shareImage(), randomShowInerstitital()"
       >
         <v-icon>{{ mdiShareVariant }}</v-icon>

@@ -6,12 +6,12 @@
         :label="$t('app.continentLabel')"
         item-value="value"
         item-text="text"
-        filled
+        outlined
         dense
         hide-details
         :items="continents"
       />
-      <v-btn text @click="$emit('custom')">
+      <v-btn outlined color="primary" height="40" @click="$emit('custom')">
         {{ $t('app.custom') }}
       </v-btn>
     </div>

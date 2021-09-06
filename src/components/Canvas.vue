@@ -66,7 +66,7 @@ export default {
         const scaleFactor = canvas.height / myImg.height
         const img = myImg.set({
           left: 360,
-          top: 360,
+          top: 380,
           originX: 'center',
           originY: 'center',
           scaleX: scaleFactor * 0.15 / canvas.getZoom(),
@@ -125,7 +125,7 @@ export default {
           const scaleFactor = canvas.height / myImg.height
           const img = myImg.set({
             left: 360,
-            top: 360,
+            top: 380,
             originX: 'center',
             originY: 'center',
             scaleX: scaleFactor * 0.75 / canvas.getZoom(),
@@ -184,7 +184,7 @@ export default {
         const scaleFactor = canvas.height / myImg.height
         const img = myImg.set({
           left: 355,
-          top: 360,
+          top: 380,
           originX: 'center',
           originY: 'center',
           scaleX: scaleFactor * 0.76 / canvas.getZoom(),
@@ -205,7 +205,7 @@ export default {
         const scaleFactor = canvas.height / myImg.height
         const img = myImg.set({
           left: 400,
-          top: 360,
+          top: 380,
           originX: 'center',
           originY: 'center',
           scaleX: scaleFactor * 0.20 / canvas.getZoom(),

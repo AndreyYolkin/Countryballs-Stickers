@@ -17,7 +17,10 @@ export default {
     continentLabel: 'Континент',
     backgroundLabel: 'Фон',
     custom: 'Свой',
-    save: 'Сохранить'
+    save: 'Сохранить',
+    BO: 'Legacy: Boho',
+    GE: 'Legacy: Geometry',
+    ME: 'Legacy: Memphis',
   },
   poster: {
     title: 'Это альфа-версия',

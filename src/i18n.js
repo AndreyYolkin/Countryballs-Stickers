@@ -2,13 +2,15 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 
 import en from './lang/en'
+import ru from './lang/ru'
+import ua from './lang/ua'
+import be from './lang/be'
 import es from './lang/es'
 import pt from './lang/pt'
-import ru from './lang/ru'
 
 Vue.use(VueI18n)
 
-const messages = { en, es, pt, ru }
+const messages = { en, es, pt, ru, ua, be }
 
 const getLocale = () => {
   const cookieLanguage = sessionStorage.getItem('language')
