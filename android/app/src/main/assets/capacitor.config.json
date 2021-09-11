@@ -2,5 +2,10 @@
 	"appId": "com.buggames.countryballs",
 	"appName": "Countryballs",
 	"webDir": "dist",
+	"launchAutoHide": false,
+	"androidScaleType": "CENTER_CROP",
+	"showSpinner": false,
+	"splashFullScreen": false,
+	"splashImmersive": false,
 	"bundledWebRuntime": false
 }
