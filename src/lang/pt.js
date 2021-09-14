@@ -13,9 +13,12 @@ export default {
     backgrounds: {
       transparent: 'Transparente',
       color: 'Colori',
-      BO: 'Legacy: Boho',
-      GE: 'Legacy: Geometry',
-      ME: 'Legacy: Memphis',
+      BO: 'Legado: Boho',
+      GE: 'Legado: Geometry',
+      ME: 'Legago: Memphis',
+    },
+    settings: {
+      legacy_stroke: 'Use traço antigo'
     },
     continentLabel: 'Continente',
     backgroundLabel: 'Fundo',
@@ -23,14 +26,13 @@ export default {
     save: 'Salve'
   },
   poster: {
-    title: 'Esta é a versão alfa',
+    title: 'Esta é uma nova versão',
     text: `Sim, está acontecendo. Depois de 3 anos, encontrei um tempo para lidar com isso
     aplicativo.
     <br>
     <br>
     Há muitas coisas que preciso implementar, então ficarei feliz,
-    se você me escrever no e-mail listado no google play e dar algum feedback útil.
-    Além disso, se você pode desenhar acessórios realmente bonitos, escreva-me também :)`,
+    se você me escrever no e-mail listado no Google Play e dar algum feedback útil`,
     action: 'Vamos!'
   },
   privacy: {

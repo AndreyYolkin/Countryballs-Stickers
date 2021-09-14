@@ -192,11 +192,12 @@ export default {
           selectable: false,
         })
         canvas.add(img)
-        // setTimeout(() => {
-        //   this.stroke.set('scaleX', scaleFactor * -0.76 / canvas.getZoom()).set('left', 365)
-        //   canvas.renderAll.bind(canvas)
-        // }, 3000)
       })
+    },
+    setStroke(name) {
+      const canvas = this.canvas
+      const stroke = require.context('../assets/strokes', false, /\.png$/)(`./${name}.png`)
+      this.stroke.setSrc(stroke, canvas.renderAll.bind(canvas))
     },
     initEye() {
       const canvas = this.canvas

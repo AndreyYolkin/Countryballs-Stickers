@@ -17,20 +17,22 @@ export default {
       GE: 'Legacy: Geometry',
       ME: 'Legacy: Memphis',
     },
+    settings: {
+      legacy_stroke: 'Use old stroke'
+    },
     continentLabel: 'Continent',
     backgroundLabel: 'Background',
     custom: 'Own',
     save: 'Save'
   },
   poster: {
-    title: 'This is the alpha version',
+    title: 'This is the new version',
     text: `Yes, it's happenning. After 3 years I found a time to deal with this
     application.
     <br>
     <br>
     There are a lot of things I need to implement, so I will be glad,
-    if you write me on e-mail listed in google play and give any usefull feedback.
-    Also if you can draw really beatiful accessories, write me too:)`,
+    if you write me on e-mail listed in Google Play and give any usefull feedback`,
     action: 'Let\'s go!'
   },
   privacy: {

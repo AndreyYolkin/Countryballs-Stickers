@@ -17,20 +17,22 @@ export default {
       GE: 'Legado: Geometry',
       ME: 'Legado: Memphis',
     },
+    settings: {
+      legacy_stroke: 'Usar trazo antiguo'
+    },
     continentLabel: 'Continente',
     backgroundLabel: 'Fondo',
     custom: 'Propia',
     save: 'Salvar'
   },
   poster: {
-    title: 'Esta es la versión alfa',
+    title: 'Esta es una nueva versión',
     text: `Sí, está sucediendo. Después de 3 años encontré un momento para lidiar con esto.
     solicitud.
     <br>
     <br>
     Hay muchas cosas que debo implementar, así que me alegraré,
-    si me escribe en el correo electrónico que aparece en Google Play y da algún comentario útil
-    Además, si puedes dibujar accesorios realmente bonitos, escríbeme también :)`,
+    si me escribe en el correo electrónico que aparece en Google Play y da algún comentario útil`,
     action: '¡Vamos!'
   },
   privacy: {

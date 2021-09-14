@@ -21,7 +21,7 @@
       <v-tab>
         <v-icon>{{ mdiPuzzle }}</v-icon>
       </v-tab>
-      <v-tab disabled>
+      <v-tab>
         <v-icon>{{ mdiCog }}</v-icon>
       </v-tab>
     </v-tabs>
@@ -38,8 +38,8 @@
       <v-tab-item>
         <TabAccessories @addaccessory="$emit('addaccessory', $event)" @deleteaccessories="$emit('deleteaccessories')" />
       </v-tab-item>
-      <v-tab-item disabled>
-        <TabSettings />
+      <v-tab-item>
+        <TabSettings @setstroke="$emit('setstroke', $event)" />
       </v-tab-item>
     </v-tabs-items>
   </div>

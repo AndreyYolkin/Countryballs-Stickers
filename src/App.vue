@@ -10,6 +10,7 @@
             <v-badge
               color="pink"
               :content="$t('app.alpha')"
+              :value="false"
               offset-x="90"
               offset-y="28"
             >
@@ -24,6 +25,7 @@
             @setflag="$refs.canvas.setFlag($event)"
             @seteye="$refs.canvas.setEye($event)"
             @addaccessory="$refs.canvas.addAccessory($event)"
+            @setstroke="$refs.canvas.setStroke($event)"
             @custom="openCustomDialog($event)"
           />
         </div>
