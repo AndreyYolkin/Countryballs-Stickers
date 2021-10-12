@@ -228,7 +228,8 @@ export default {
         EU: require.context('../assets/flags/FL_EU', false, /\.png$/),
         AS: require.context('../assets/flags/FL_AS', false, /\.png$/),
         AM: require.context('../assets/flags/FL_AM', false, /\.png$/),
-        AFAU: require.context('../assets/flags/FL_AFAU', false, /\.png$/),
+        AF: require.context('../assets/flags/FL_AF', false, /\.png$/),
+        AU: require.context('../assets/flags/FL_AU', false, /\.png$/),
         OT: require.context('../assets/flags/FL_OT', false, /\.png$/),
       }
     },

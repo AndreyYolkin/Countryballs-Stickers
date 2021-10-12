@@ -7,7 +7,8 @@ export default {
       EU: 'Europe',
       AS: 'Asia',
       AM: 'America',
-      AFAU: 'Africa & Australia',
+      AF: 'Africa',
+      AU: 'Australia',
       OT: 'Other'
     },
     backgrounds: {

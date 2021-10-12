@@ -95,7 +95,8 @@ export default {
         EU: require.context('../assets/buttons/FL_EU', false, /\.png$/),
         AS: require.context('../assets/buttons/FL_AS', false, /\.png$/),
         AM: require.context('../assets/buttons/FL_AM', false, /\.png$/),
-        AFAU: require.context('../assets/buttons/FL_AFAU', false, /\.png$/),
+        AU: require.context('../assets/buttons/FL_AU', false, /\.png$/),
+        AF: require.context('../assets/buttons/FL_AF', false, /\.png$/),
         OT: require.context('../assets/buttons/FL_OT', false, /\.png$/),
       }
       this.flags = this.allFlags[this.continent]

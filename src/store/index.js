@@ -13,7 +13,7 @@ export default new Vuex.Store({
       accessories: [],
     },
     app: {
-      continents: ['EU', 'AS', 'AM', 'AFAU', 'OT'],
+      continents: ['EU', 'AS', 'AM', 'AF', 'AU', 'OT'],
       continent: 'EU',
       backgrounds: ['transparent', 'color', 'BO', 'GE', 'ME'],
       background: 'transparent'
