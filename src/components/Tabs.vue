@@ -25,7 +25,7 @@
         <v-icon>{{ mdiCog }}</v-icon>
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tab" class="tw-overflow-y-auto">
+    <v-tabs-items v-model="tab" touchless class="tw-overflow-y-auto">
       <v-tab-item>
         <TabFlag @setflag="$emit('setflag', $event)" @custom="$emit('custom', 'flag')" />
       </v-tab-item>
