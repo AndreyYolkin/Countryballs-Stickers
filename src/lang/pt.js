@@ -24,6 +24,7 @@ export default {
     continentLabel: 'Continente',
     backgroundLabel: 'Fundo',
     custom: 'Ter',
+    joystick: 'Alternar joystick',
     save: 'Salve'
   },
   poster: {

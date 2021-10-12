@@ -30,7 +30,7 @@
         <TabFlag @setflag="$emit('setflag', $event)" @custom="$emit('custom', 'flag')" />
       </v-tab-item>
       <v-tab-item>
-        <TabEye @seteye="$emit('seteye', $event)" />
+        <TabEye @seteye="$emit('seteye', $event)" @seteyesposition="$emit('seteyesposition', $event)" />
       </v-tab-item>
       <v-tab-item>
         <TabBack @setback="$emit('setback', $event)" @custom="$emit('custom', 'back')" />

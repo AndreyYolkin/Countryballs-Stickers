@@ -24,6 +24,7 @@ export default {
     continentLabel: 'Континент',
     backgroundLabel: 'Фон',
     custom: 'Свій',
+    joystick: 'Перемикання джойстика',
     save: 'Зберегти'
   },
   poster: {

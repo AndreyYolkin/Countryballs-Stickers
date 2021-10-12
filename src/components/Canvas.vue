@@ -199,6 +199,12 @@ export default {
       const stroke = require.context('../assets/strokes', false, /\.png$/)(`./${name}.png`)
       this.stroke.setSrc(stroke, canvas.renderAll.bind(canvas))
     },
+    setEyesPosition({ x, y }) {
+      this.eye.left = 400 + x
+      this.eye.top = 380 + y
+      const canvas = this.canvas
+      canvas.renderAll.bind(canvas)()
+    },
     initEye() {
       const canvas = this.canvas
       fabric.Image.fromURL(this.getEyeURL(0), (myImg) => {

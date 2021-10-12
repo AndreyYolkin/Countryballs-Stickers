@@ -24,6 +24,7 @@ export default {
     continentLabel: 'Continent',
     backgroundLabel: 'Background',
     custom: 'Own',
+    joystick: 'Toggle Joystick',
     save: 'Save'
   },
   poster: {
