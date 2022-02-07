@@ -11,11 +11,12 @@
     "lint-fix": "vue-cli-service lint --fix"
   },
   "dependencies": {
+    "@agorapulse/capacitor-mediastore": "^0.0.2",
     "@capacitor-community/admob": "^3.2.0",
-    "@capacitor/android": "^3.2.4",
-    "@capacitor/cli": "^3.2.4",
-    "@capacitor/core": "^3.2.4",
-    "@capacitor/filesystem": "^1.0.3",
+    "@capacitor/android": "^3.3.2",
+    "@capacitor/cli": "^3.3.2",
+    "@capacitor/core": "^3.3.2",
+    "@capacitor/filesystem": "^1.0.6",
     "@capacitor/share": "^1.0.4",
     "@capacitor/storage": "^1.2.0",
     "@fontsource/rubik": "^4.5.0",
@@ -32,9 +33,9 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-eslint": "^5.0.0-beta.3",
-    "@vue/cli-plugin-vuex": "^5.0.0-beta.3",
-    "@vue/cli-service": "^5.0.0-beta.3",
+    "@vue/cli-plugin-eslint": "^5.0.0-rc.2",
+    "@vue/cli-plugin-vuex": "^5.0.0-rc.2",
+    "@vue/cli-service": "^5.0.0-rc.1",
     "@vue/eslint-config-standard": "^6.0.0",
     "autoprefixer": "^10.3.4",
     "babel-eslint": "^10.1.0",
