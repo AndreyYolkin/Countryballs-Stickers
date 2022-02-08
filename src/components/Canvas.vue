@@ -59,6 +59,21 @@ export default {
       canvas.discardActiveObject().renderAll()
       this.$store.commit('setSelected', { active: false })
     },
+    createTextField() {
+      const canvas = this.canvas
+      const textbox = new fabric.Textbox('Caption goes here - you can resize the text with the handles', {
+        left: 20,
+        top: 455,
+        width: 320,
+        fontSize: 28,
+        fill: '#000',
+        textBackgroundColor: '#e88',
+        fontFamily: 'RubikVariable',
+        fontWeight: 800,
+        textAlign: 'center',
+      })
+      canvas.add(textbox)
+    },
     addAccessory(event) {
       const { index } = event
       const canvas = this.canvas

@@ -22,6 +22,9 @@
         <v-icon>{{ mdiPuzzle }}</v-icon>
       </v-tab>
       <v-tab>
+        <v-icon>{{ mdiFormatSize }}</v-icon>
+      </v-tab>
+      <v-tab>
         <v-icon>{{ mdiCog }}</v-icon>
       </v-tab>
     </v-tabs>
@@ -39,6 +42,9 @@
         <TabAccessories @addaccessory="$emit('addaccessory', $event)" @deleteaccessories="$emit('deleteaccessories')" />
       </v-tab-item>
       <v-tab-item>
+        <TabText @createtextfield="$emit('createtextfield', $event)" />
+      </v-tab-item>
+      <v-tab-item>
         <TabSettings @setstroke="$emit('setstroke', $event)" />
       </v-tab-item>
     </v-tabs-items>
@@ -46,11 +52,12 @@
 </template>
 
 <script>
-import { mdiWeb, mdiEye, mdiImage, mdiPuzzle, mdiCog } from '@mdi/js'
+import { mdiWeb, mdiEye, mdiImage, mdiPuzzle, mdiCog, mdiFormatSize } from '@mdi/js'
 import TabFlag from './TabFlag.vue'
 import TabBack from './TabBack.vue'
 import TabSettings from './TabSettings.vue'
 import TabEye from './TabEye.vue'
+import TabText from './TabText.vue'
 import TabAccessories from './TabAccessories.vue'
 
 export default {
@@ -59,6 +66,7 @@ export default {
     TabSettings,
     TabBack,
     TabEye,
+    TabText,
     TabAccessories
   },
   data () {
@@ -68,7 +76,8 @@ export default {
       mdiEye,
       mdiImage,
       mdiPuzzle,
-      mdiCog
+      mdiCog,
+      mdiFormatSize
     }
   },
 }

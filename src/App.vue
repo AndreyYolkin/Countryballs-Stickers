@@ -26,6 +26,7 @@
             @seteye="$refs.canvas.setEye($event)"
             @addaccessory="$refs.canvas.addAccessory($event)"
             @setstroke="$refs.canvas.setStroke($event)"
+            @createtextfield="$refs.canvas.createTextField($event)"
             @seteyesposition="$refs.canvas.setEyesPosition($event)"
             @custom="openCustomDialog($event)"
           />
