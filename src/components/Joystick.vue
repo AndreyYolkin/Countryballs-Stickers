@@ -79,13 +79,13 @@ export default {
       const offset = 80 - 32
       const radians = Math.atan2(y, x)
       const angle = Math.round((radians * 180) / Math.PI, 4)
-      this.$set(this.joystick, 'angle', angle + (angle > 90 ? -270 : 90))
-      this.$set(this.joystick, 'speed', Math.min(
+      this.joystick.angle = angle + (angle > 90 ? -270 : 90)
+      this.joystick.speed = Math.min(
         Math.round(Math.sqrt(Math.pow(y, 2) + Math.pow(x, 2))),
         80
-      ))
-      this.$set(this.joystick, 'x', this.joystick.speed > offset ? Math.cos(radians) * offset : x - 4)
-      this.$set(this.joystick, 'y', this.joystick.speed >= offset ? Math.sin(radians) * offset : y - 4)
+      )
+      this.joystick.x = this.joystick.speed > offset ? Math.cos(radians) * offset : x - 4
+      this.joystick.y = this.joystick.speed >= offset ? Math.sin(radians) * offset : y - 4
       this.emitAll()
     },
     emitAll(name = 'change') {

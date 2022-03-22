@@ -105,7 +105,7 @@ export default {
           temp_image = response.data
           reader.readAsDataURL(temp_image)
           reader.onload = e => {
-            this.$set(this, 'image', e.target.result)
+            this.image' = e.target.result)
             this.showCropper = true
           }
         }) */

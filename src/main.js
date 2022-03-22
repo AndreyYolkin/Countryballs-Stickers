@@ -1,20 +1,20 @@
-import '@capacitor/core'
-
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
-import store from './store'
+
+import '@capacitor/core'
+import 'vuetify/styles'
+
+import { store } from './store'
+import { vuetify } from './plugins/vuetify'
+import { i18n } from './i18n'
 
 import './assets/styles/tw.css'
-import vuetify from './plugins/vuetify'
 import '@fontsource/rubik/variable.css'
 
-import i18n from './i18n'
+const app = createApp(App)
 
-Vue.config.productionTip = false
+app.use(store)
+app.use(vuetify)
+app.use(i18n)
 
-new Vue({
-  store,
-  vuetify,
-  i18n,
-  render: (h) => h(App)
-}).$mount('#app')
+app.mount('#app')

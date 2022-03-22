@@ -3,6 +3,7 @@ export default {
     close: 'Cerrar',
     saved: 'Imagem salva',
     alpha: 'versão alfa',
+    beta: 'versão beta',
     continents: {
       EU: 'Europa',
       AS: 'Asia',
@@ -18,6 +19,11 @@ export default {
       GE: 'Legado: Geometry',
       ME: 'Legado: Memphis',
     },
+    text: {
+      color: 'Color',
+      background: 'Fondo',
+      defaultText: 'Doble pulso para editar'
+    },
     settings: {
       legacy_stroke: 'Usar trazo antiguo'
     },
@@ -25,17 +31,8 @@ export default {
     backgroundLabel: 'Fondo',
     custom: 'Propia',
     joystick: 'Alternar joystick',
-    save: 'Salvar'
-  },
-  poster: {
-    title: 'Esta es una nueva versión',
-    text: `Sí, está sucediendo. Después de 3 años encontré un momento para lidiar con esto.
-    solicitud.
-    <br>
-    <br>
-    Hay muchas cosas que debo implementar, así que me alegraré,
-    si me escribe en el correo electrónico que aparece en Google Play y da algún comentario útil`,
-    action: '¡Vamos!'
+    save: 'Salvar',
+    add: 'Agregar'
   },
   privacy: {
     title: 'Política de privacidad',

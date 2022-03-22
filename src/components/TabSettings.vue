@@ -1,17 +1,30 @@
 <template>
   <div class="tw-relative tw-w-full tw-p-3">
-    <v-switch v-model="stroke" inset :label="$t('app.settings.legacy_stroke')" />
+    <v-select
+      dense
+      outlined
+      v-model="$root.$i18n.locale"
+      :prepend-inner-icon="mdiTranslate"
+      :items="$root.$i18n.availableLocales"
+    />
   </div>
 </template>
 
 <script>
+import { mdiTranslate } from '@mdi/js'
+
+import { Storage } from '@capacitor/storage'
+
 export default {
   data() {
     return {
       light: 0,
       direction: 1,
-      stroke: false
+      mdiTranslate
     }
+  },
+  mounted() {
+    console.log(this.$root.$i18n.availableLocales)
   },
   watch: {
     light() {
@@ -20,13 +33,14 @@ export default {
     direction() {
       this.$emit('direction', this.direction)
     },
-    stroke() {
-      this.$emit('setstroke', ['circle', 'circle_legacy'][+this.stroke])
-    }
-  }
+    '$root.$i18n.locale': {
+      handler(locale) {
+        Storage.set({ key: 'language', value: locale })
+      },
+    },
+  },
 }
 </script>
 
 <style>
-
 </style>

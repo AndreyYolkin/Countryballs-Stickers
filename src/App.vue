@@ -9,8 +9,9 @@
           <div class="tw-aspect-w-1 tw-aspect-h-1 tw-w-full tw-shadow">
             <v-badge
               color="pink"
-              :content="$t('app.alpha')"
-              :value="false"
+              class="tw-text-white"
+              :content="$t('app.beta')"
+              :model-value="true"
               offset-x="90"
               offset-y="28"
             >
@@ -21,6 +22,7 @@
         <div class="tw-col-span-1">
           <Tabs
             class="tw-h-full tw-max-h-screen tw-flex tw-flex-col"
+            @rerender="$refs.canvas.rerender($event)"
             @setback="$refs.canvas.setBack($event)"
             @setflag="$refs.canvas.setFlag($event)"
             @seteye="$refs.canvas.setEye($event)"
@@ -36,11 +38,12 @@
     <v-fab-transition>
       <v-btn
         v-if="selected"
-        fab
+        icon
         fixed
         left
         bottom
         color="red darken-1"
+        class="tw-fixed tw-bottom-[20px] text-white"
         @click="$refs.canvas.deleteAccessories()"
       >
         <v-icon color="white">
@@ -48,43 +51,28 @@
         </v-icon>
       </v-btn>
     </v-fab-transition>
-    <v-speed-dial
-      v-model="fab"
-      right
-      bottom
-      fixed
-      direction="top"
-      transition="slide-y-reverse-transition"
-    >
-      <template v-slot:activator>
-        <v-btn v-model="fab" color="primary" fab>
-          <v-icon v-if="fab">
-            {{ mdiClose }}
-          </v-icon>
-          <v-icon v-else>
-            {{ mdiContentSave }}
-          </v-icon>
-        </v-btn>
-      </template>
       <v-btn
-        fab
-        dark
-        small
+        icon
+        right
+        bottom
+        fixed
         color="#5567EC"
+        class="tw-fixed tw-bottom-[40px] text-white"
         @click="$refs.canvas.downloadImage(), randomShowInerstitital()"
       >
         <v-icon>{{ mdiDownload }}</v-icon>
       </v-btn>
       <v-btn
-        fab
-        dark
-        small
+        icon
+        right
+        bottom
+        fixed
         color="#5567EC"
+        class="tw-fixed tw-bottom-[20px] text-white"
         @click="$refs.canvas.shareImage(), randomShowInerstitital()"
       >
         <v-icon>{{ mdiShareVariant }}</v-icon>
       </v-btn>
-    </v-speed-dial>
     <v-dialog
       max-width="600"
       v-model="customDialog"
@@ -118,9 +106,9 @@
 
       <template v-slot:action="{ attrs }">
         <v-btn
+          v-bind="attrs"
           :color="snackbar.status"
           text
-          v-bind="attrs"
           @click="snackbar.active = false"
         >
           {{ $t('app.close') }}
@@ -172,7 +160,7 @@ export default {
       selected: state => state.selected.active
     })
   },
-  created () {
+  async created () {
     this.$store.watch(state => state.snackbar.text, () => {
       const msg = this.$store.state.snackbar.text
       if (msg !== '') {
@@ -182,6 +170,10 @@ export default {
         this.$store.commit('setSnackbar', { text: '' })
       }
     })
+    const cookieLanguage = (await Storage.get({ key: 'language' })).value
+    if (cookieLanguage) {
+      this.$root.$i18n.locale = cookieLanguage
+    }
   },
   mounted() {
     setTimeout(this.showInterstitial, 15000)

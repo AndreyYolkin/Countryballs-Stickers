@@ -3,6 +3,7 @@ export default {
     close: 'Close',
     saved: 'Image saved',
     alpha: 'alpha version',
+    beta: 'beta version',
     continents: {
       EU: 'Europe',
       AS: 'Asia',
@@ -18,6 +19,11 @@ export default {
       GE: 'Legacy: Geometry',
       ME: 'Legacy: Memphis',
     },
+    text: {
+      color: 'Color',
+      background: 'Background',
+      defaultText: 'Double-tap to edit'
+    },
     settings: {
       legacy_stroke: 'Use old stroke'
     },
@@ -25,17 +31,8 @@ export default {
     backgroundLabel: 'Background',
     custom: 'Own',
     joystick: 'Toggle Joystick',
-    save: 'Save'
-  },
-  poster: {
-    title: 'This is the new version',
-    text: `Yes, it's happenning. After 3 years I found a time to deal with this
-    application.
-    <br>
-    <br>
-    There are a lot of things I need to implement, so I will be glad,
-    if you write me on e-mail listed in Google Play and give any usefull feedback`,
-    action: 'Let\'s go!'
+    save: 'Save',
+    add: 'Add'
   },
   privacy: {
     title: 'Privacy policy',

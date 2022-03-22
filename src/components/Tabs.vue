@@ -7,7 +7,7 @@
       center-active
       show-arrows
       fixed-tabs
-      class="tw-flex-grow-0"
+      class="tw-flex-grow-0 tw-flex-shrink-0"
     >
       <v-tab>
         <v-icon>{{ mdiWeb }}</v-icon>
@@ -28,26 +28,30 @@
         <v-icon>{{ mdiCog }}</v-icon>
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tab" touchless class="tw-overflow-y-auto">
-      <v-tab-item>
-        <TabFlag @setflag="$emit('setflag', $event)" @custom="$emit('custom', 'flag')" />
-      </v-tab-item>
-      <v-tab-item>
+    <v-window v-model="tab" touchless class="tw-overflow-y-auto">
+      <v-window-item>
+        <TabFlag
+          @custom="$emit('custom', 'flag')"
+          @setflag="$emit('setflag', $event)"
+          @setstroke="$emit('setstroke', $event)"
+        />
+      </v-window-item>
+      <v-window-item>
         <TabEye @seteye="$emit('seteye', $event)" @seteyesposition="$emit('seteyesposition', $event)" />
-      </v-tab-item>
-      <v-tab-item>
+      </v-window-item>
+      <v-window-item>
         <TabBack @setback="$emit('setback', $event)" @custom="$emit('custom', 'back')" />
-      </v-tab-item>
-      <v-tab-item>
+      </v-window-item>
+      <v-window-item>
         <TabAccessories @addaccessory="$emit('addaccessory', $event)" @deleteaccessories="$emit('deleteaccessories')" />
-      </v-tab-item>
-      <v-tab-item>
-        <TabText @createtextfield="$emit('createtextfield', $event)" />
-      </v-tab-item>
-      <v-tab-item>
-        <TabSettings @setstroke="$emit('setstroke', $event)" />
-      </v-tab-item>
-    </v-tabs-items>
+      </v-window-item>
+      <v-window-item>
+        <TabText @createtextfield="$emit('createtextfield', $event)" @rerender="$emit('rerender')" />
+      </v-window-item>
+      <v-window-item>
+        <TabSettings />
+      </v-window-item>
+    </v-window>
   </div>
 </template>
 

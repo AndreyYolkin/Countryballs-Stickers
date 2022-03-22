@@ -1,33 +1,33 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-  state: () => ({
-    ball: {
-      flag: 'EU_0',
-      back: 0,
-      customBack: false,
-      eye: 0,
-      accessories: [],
-    },
-    app: {
-      continents: ['EU', 'AS', 'AM', 'AF', 'AU', 'OT'],
-      continent: 'EU',
-      backgrounds: ['transparent', 'color', 'BO', 'GE', 'ME'],
-      background: 'transparent'
-    },
-    selected: {
-      active: false,
-      objects: {}
-    },
-    snackbar: {
-      active: false,
-      text: '',
-      status: ''
-    },
-  }),
+export const store = createStore({
+  state() {
+    return {
+      ball: {
+        flag: 'EU_0',
+        back: 0,
+        customBack: false,
+        eye: 0,
+        accessories: [],
+      },
+      app: {
+        continents: ['EU', 'AS', 'AM', 'AF', 'AU', 'OT'],
+        continent: 'EU',
+        backgrounds: ['transparent', 'color', 'BO', 'GE', 'ME'],
+        background: 'transparent'
+      },
+      selected: {
+        active: false,
+        objects: {},
+        texts: []
+      },
+      snackbar: {
+        active: false,
+        text: '',
+        status: ''
+      },
+    }
+  },
   mutations: {
     setFlag(state, data) {
       state.ball.flag = data
@@ -41,6 +41,7 @@ export default new Vuex.Store({
     setSelected(state, data) {
       state.selected.active = data.active
       state.selected.objects = data.objects
+      state.selected.texts = data.texts
     },
     setBack(state, data) {
       state.ball.flag = data

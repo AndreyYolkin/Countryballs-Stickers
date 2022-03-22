@@ -42,6 +42,7 @@ export default {
     }),
     loadFlags() {
       this.accessories = require.context('../assets/buttons/AC', false, /\.png$/)
+      console.log(this.accessories)
     },
     getImgUrl(index) {
       return this.accessories('./' + index.toString().padStart(3, 0) + '.png')

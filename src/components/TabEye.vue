@@ -28,7 +28,7 @@
           >
             <v-item v-slot="{ active, toggle }">
               <v-card
-                :img="getImgUrl(index)"
+                :image="getImgUrl(index)"
                 class="d-flex align-center tw-aspect-w-1 tw-aspect-h-1"
                 @click="$emit('seteye', { index }), toggle()"
               >

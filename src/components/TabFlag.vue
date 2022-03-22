@@ -1,19 +1,31 @@
 <template>
   <div class="tw-relative tw-w-full">
-    <div class="tw-pt-4 tw-px-3 tw-flex tw-gap-2 tw-items-center tw-bg-white">
-      <v-select
-        v-model="continent"
-        :label="$t('app.continentLabel')"
-        item-value="value"
-        item-text="text"
-        outlined
-        dense
-        hide-details
-        :items="continents"
-      />
-      <v-btn outlined color="primary" height="40" @click="$emit('custom')">
-        {{ $t('app.custom') }}
-      </v-btn>
+    <div class="tw-pt-4 tw-px-3 tw-flex tw-flex-col tw-gap-2 tw-items-center tw-bg-white">
+      <div class="tw-flex tw-gap-2 tw-items-center tw-w-full">
+        <v-select
+          v-model="continent"
+          :label="$t('app.continentLabel')"
+          item-value="value"
+          item-text="text"
+          outlined
+          dense
+          hide-details
+          :items="continents"
+        />
+        <v-btn outlined color="primary" height="40" @click="$emit('custom')">
+          {{ $t("app.custom") }}
+        </v-btn>
+      </div>
+      <div class="tw-relative tw-w-full tw-px-3">
+        <v-switch
+          v-model="stroke"
+          hide-details
+          color="primary"
+          class="mt-0 mb-2"
+          inset
+          :label="$t('app.settings.legacy_stroke')"
+        />
+      </div>
     </div>
     <v-item-group>
       <v-container fluid>
@@ -26,14 +38,16 @@
           >
             <v-item v-slot="{ active, toggle }">
               <v-card
-                :img="getImgUrl(index)"
+                :image="getImgUrl(index)"
                 class="d-flex align-center tw-aspect-w-1 tw-aspect-h-1"
                 @click="$emit('setflag', { index, continent }), toggle()"
               >
                 <v-scroll-y-transition>
                   <div
                     v-if="active"
-                    class="tw-flex tw-justify-center tw-items-center tw-text-center"
+                    class="
+                      tw-flex tw-justify-center tw-items-center tw-text-center
+                    "
                   >
                     <v-icon dark>
                       {{ mdiCheck }}
@@ -58,13 +72,16 @@ export default {
     return {
       allFlags: {},
       flags: () => {},
-      mdiCheck
+      stroke: false,
+      mdiCheck,
     }
   },
   computed: {
     continents() {
-      return this.$store.state.app.continents
-        .map(c => ({ text: this.$t(`app.continents.${c}`), value: c }))
+      return this.$store.state.app.continents.map((c) => ({
+        text: this.$t(`app.continents.${c}`),
+        value: c,
+      }))
     },
     continent: {
       get() {
@@ -72,25 +89,29 @@ export default {
       },
       set(value) {
         this.$setContinent(value)
-      }
-    }
+      },
+    },
   },
   watch: {
     continent: {
       handler() {
         this.flags = this.allFlags[this.continent]
       },
-      immediate: true
-    }
+      immediate: true,
+    },
+    stroke() {
+      this.$emit('setstroke', ['circle', 'circle_legacy'][+this.stroke])
+    },
   },
   created() {
     this.loadFlags()
   },
   methods: {
     ...mapMutations({
-      $setContinent: 'setContinent'
+      $setContinent: 'setContinent',
     }),
     loadFlags() {
+      console.log('called')
       this.allFlags = {
         EU: require.context('../assets/buttons/FL_EU', false, /\.png$/),
         AS: require.context('../assets/buttons/FL_AS', false, /\.png$/),
@@ -100,6 +121,7 @@ export default {
         OT: require.context('../assets/buttons/FL_OT', false, /\.png$/),
       }
       this.flags = this.allFlags[this.continent]
+      console.log(this.flags)
     },
     getImgUrl(index) {
       return this.flags('./' + index.toString().padStart(3, 0) + '.png')

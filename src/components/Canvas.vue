@@ -9,6 +9,9 @@ import { mapMutations } from 'vuex'
 import { fabric } from 'fabric'
 import { Share } from '@capacitor/share'
 import { Filesystem, Directory } from '@capacitor/filesystem'
+import { Mediastore } from '@agorapulse/capacitor-mediastore'
+
+import '@/utils/fabric.js'
 
 export default {
   data () {
@@ -21,7 +24,9 @@ export default {
       flag: () => {},
       back: () => {},
       eye: () => {},
-      stroke: () => {}
+      stroke: () => {},
+
+      texts: new Set(),
     }
   },
   async mounted() {
@@ -31,10 +36,16 @@ export default {
     this.$nextTick(() => {
       window.addEventListener('resize', () => this.fitToContainer(this.canvas))
       this.canvas.on('selection:created', (objects) => {
-        this.$store.commit('setSelected', { active: true, objects })
+        this.$emit('objectselected')
+        this.$store.commit('setSelected', { active: true, objects, texts: objects.selected.filter(s => this.texts.has(s)) })
+      })
+      this.canvas.on('selection:updated', (objects) => {
+        this.$emit('objectselected')
+        this.$store.commit('setSelected', { active: true, objects, texts: objects.selected.filter(s => this.texts.has(s)) })
       })
       this.canvas.on('selection:cleared', () => {
-        this.$store.commit('setSelected', { active: false })
+        this.$emit('objectselected', [])
+        this.$store.commit('setSelected', { active: false, texts: [] })
       })
     })
     await this.initFlag()
@@ -51,27 +62,33 @@ export default {
     ...mapMutations({
       $setSnackBar: 'setSnackbar'
     }),
+    rerender() {
+      const canvas = this.canvas
+      canvas.renderAll()
+    },
     deleteAccessories() {
       const canvas = this.canvas
       canvas.getActiveObjects().forEach((obj) => {
         canvas.remove(obj)
+        this.texts.remove(obj)
       })
       canvas.discardActiveObject().renderAll()
       this.$store.commit('setSelected', { active: false })
     },
     createTextField() {
       const canvas = this.canvas
-      const textbox = new fabric.Textbox('Caption goes here - you can resize the text with the handles', {
-        left: 20,
-        top: 455,
-        width: 320,
-        fontSize: 28,
-        fill: '#000',
-        textBackgroundColor: '#e88',
+      const textbox = new fabric.Textbox('Canvas', {
+        left: 360,
+        top: 380,
+        fontSize: 36,
+        fill: '#1d1d1b',
+        textBackgroundColor: '#fff',
         fontFamily: 'RubikVariable',
-        fontWeight: 800,
+        fontWeight: 500,
+        padding: 15,
         textAlign: 'center',
       })
+      this.texts.add(textbox)
       canvas.add(textbox)
     },
     addAccessory(event) {
@@ -283,34 +300,23 @@ export default {
         Filesystem.writeFile({
           path: `sticker_${dayjs().format('YYYY_MM_DDTHH_mm_ss')}.png`,
           data: this.canvas.toDataURL({ multiplier: 720 / this.canvas.width }),
-          directory: Directory.Documents
+          directory: Directory.Cache
         })
-          .then(result => resolve(result))
-      })
-    },
-    _checkPermissions() {
-      return new Promise((resolve, reject) => {
-        Filesystem.checkPermissions().then(response => {
-          if (response && response.publicStorage === 'granted') {
-            resolve(true)
-          } else if (response && response.publicStorage !== 'denied') {
-            Filesystem.requestPermissions()
-              .then(response => {
-                if (response && response.publicStorage === 'granted') {
-                  resolve(true)
-                }
-              })
-          }
-        })
+          .then(result => {
+            Mediastore.savePicture({
+              album: 'Countryballs',
+              path: result.uri,
+              filename: `sticker_${dayjs().format('YYYY_MM_DDTHH_mm_ss')}.png`,
+            })
+            resolve(result)
+          })
       })
     },
     async downloadImage() {
-      await this._checkPermissions()
       await this._saveImage()
       this.$setSnackBar({ text: this.$t('app.saved'), status: 'success' })
     },
     async shareImage() {
-      await this._checkPermissions()
       const result = await this._saveImage()
       Share.share({
         title: 'See cool stuff',

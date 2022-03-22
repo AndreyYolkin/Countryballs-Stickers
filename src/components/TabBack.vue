@@ -23,6 +23,7 @@
               :key="palleteKey"
               v-model="color"
               :width="palleteWidth"
+              mode="hexa"
               show-swatches
             />
           </v-col>
@@ -36,7 +37,7 @@
           >
             <v-item v-slot="{ active, toggle }">
               <v-card
-                :img="getImgUrl(index)"
+                :image="getImgUrl(index)"
                 class="d-flex align-center tw-aspect-w-1 tw-aspect-h-1"
                 @click="$emit('setback', { index, pack: background }), toggle()"
               >
@@ -117,7 +118,7 @@ export default {
     window.addEventListener('resize', this.handleResize)
     if (this.$refs.pallete) {
       this.palleteWidth = this.$refs.pallete.clientWidth
-      this.$set(this, 'palleteKey', this.palleteKey + 1)
+      this.palleteKey = this.palleteKey + 1
     }
     this.canvas = document.createElement('canvas')
     this.canvas.width = 720
@@ -144,7 +145,7 @@ export default {
     handleResize() {
       if (this.$refs.pallete) {
         this.palleteWidth = this.$refs.pallete.clientWidth
-        this.$set(this, 'palleteKey', this.palleteKey + 1)
+        this.palleteKey = this.palleteKey + 1
       }
     },
     sendColorBg(color) {
