@@ -1,7 +1,7 @@
 <template>
   <div class="tw-relative tw-w-full">
     <div class="tw-pt-4 tw-px-3 tw-relative tw-bg-white">
-      <v-btn outlined color="primary" height="40" @click="toggleJoystick()">
+      <v-btn variant="outlined" color="primary" height="40" @click="toggleJoystick()">
         {{ $t('app.joystick') }}
       </v-btn>
     </div>
@@ -12,7 +12,7 @@
           <div class="tw-w-12">X: {{ ~~eyeStick.x }}</div>
           <div class="tw-w-12">Y: {{ ~~eyeStick.y }}</div>
         </div>
-        <v-btn outlined color="#5567EC" @click="resetJoystick()">
+        <v-btn variant="outlined" color="#5567EC" @click="resetJoystick()">
           X:0 Y:0
         </v-btn>
       </div>

@@ -22,7 +22,7 @@ export default {
     text: {
       color: 'Color',
       background: 'Fondo',
-      defaultText: 'Doble pulso para editar'
+      defaultText: 'Doble pulso\npara editar'
     },
     settings: {
       legacy_stroke: 'Usar trazo antiguo'

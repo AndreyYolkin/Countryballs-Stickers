@@ -4,14 +4,12 @@
       <v-select
         v-model="background"
         :label="$t('app.backgroundLabel')"
-        item-value="value"
-        item-text="text"
-        outlined
-        dense
+        variant="outlined"
+        density="compact"
         hide-details
         :items="backgrounds"
       />
-      <v-btn outlined height="40" color="primary" @click="$emit('custom')">
+      <v-btn variant="outlined" height="40" color="primary" @click="$emit('custom')">
         {{ $t('app.custom') }}
       </v-btn>
     </div>
@@ -63,9 +61,13 @@
 <script>
 import { mdiCheck } from '@mdi/js'
 import throttle from 'lodash/throttle'
-import { mapMutations } from 'vuex'
+import { useStore } from '../store'
 
 export default {
+  setup() {
+    const store = useStore()
+    return { store }
+  },
   data() {
     return {
       color: '#ffffff',
@@ -99,15 +101,15 @@ export default {
   },
   computed: {
     backgrounds() {
-      return this.$store.state.app.backgrounds
-        .map(c => ({ text: this.$t(`app.backgrounds.${c}`), value: c }))
+      return this.store.app.backgrounds
+        .map(c => ({ text: this.$t(`app.backgrounds.${c}`), title: this.$t(`app.backgrounds.${c}`), value: c }))
     },
     background: {
       get() {
-        return this.$store.state.app.background
+        return this.store.app.background
       },
       set(value) {
-        this.$setBackground(value)
+        this.store.setBackground(value)
       }
     }
   },
@@ -128,9 +130,6 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
-    ...mapMutations({
-      $setBackground: 'setBackground'
-    }),
     loadBacks() {
       this.allBacks = {
         BO: require.context('../assets/buttons/BG_BO', false, /\.png$/),

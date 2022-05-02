@@ -1,7 +1,7 @@
-import { createStore } from 'vuex'
+import { defineStore } from 'pinia'
 
-export const store = createStore({
-  state() {
+export const useStore = defineStore('app', {
+  state: () => {
     return {
       ball: {
         flag: 'EU_0',
@@ -28,36 +28,32 @@ export const store = createStore({
       },
     }
   },
-  mutations: {
-    setFlag(state, data) {
-      state.ball.flag = data
-    },
-    setContinent(state, continent) {
-      state.app.continent = continent
-    },
-    setBackground(state, background) {
-      state.app.background = background
-    },
-    setSelected(state, data) {
-      state.selected.active = data.active
-      state.selected.objects = data.objects
-      state.selected.texts = data.texts
-    },
-    setBack(state, data) {
-      state.ball.flag = data
-    },
-    setEye(state, data) {
-      state.ball.flag = data
-    },
-    setSnackbar(state, data) {
-      state.snackbar = { ...data, active: true }
-    },
-    removeSnackbar(state) {
-      state.snackbar = { text: '', active: false }
-    },
-  },
   actions: {
+    setFlag(data) {
+      this.ball.flag = data
+    },
+    setContinent(continent) {
+      this.app.continent = continent
+    },
+    setBackground(background) {
+      this.app.background = background
+    },
+    setSelected(data) {
+      this.selected.active = data.active
+      this.selected.objects = data.objects
+      this.selected.texts = data.texts
+    },
+    setBack(data) {
+      this.ball.flag = data
+    },
+    setEye(data) {
+      this.ball.flag = data
+    },
+    setSnackbar(data) {
+      this.snackbar = { ...data, active: true }
+    },
+    removeSnackbar() {
+      this.snackbar = { text: '', active: false }
+    },
   },
-  modules: {
-  }
 })

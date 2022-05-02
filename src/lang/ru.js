@@ -22,7 +22,7 @@ export default {
     text: {
       color: 'Цвет',
       background: 'Фон',
-      defaultText: 'Дважды нажмите для редактирования'
+      defaultText: 'Дважды нажмите\nдля редактирования'
     },
     settings: {
       legacy_stroke: 'Включить старую обводку'

@@ -22,7 +22,7 @@ export default {
     text: {
       color: 'Kolor',
       background: 'Tło',
-      defaultText: 'Dwukrotnie dotknij, aby edytować'
+      defaultText: 'Dwukrotnie dotknij,\naby edytować'
     },
     settings: {
       legacy_stroke: 'Włącz stary skok'

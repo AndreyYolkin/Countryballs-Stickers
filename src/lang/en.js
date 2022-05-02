@@ -22,7 +22,7 @@ export default {
     text: {
       color: 'Color',
       background: 'Background',
-      defaultText: 'Double-tap to edit'
+      defaultText: 'Double-tap\nto edit'
     },
     settings: {
       legacy_stroke: 'Use old stroke'

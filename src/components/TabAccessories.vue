@@ -25,8 +25,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-
 export default {
   data() {
     return {
@@ -37,12 +35,8 @@ export default {
     this.loadFlags()
   },
   methods: {
-    ...mapMutations({
-      $setContinent: 'setContinent'
-    }),
     loadFlags() {
       this.accessories = require.context('../assets/buttons/AC', false, /\.png$/)
-      console.log(this.accessories)
     },
     getImgUrl(index) {
       return this.accessories('./' + index.toString().padStart(3, 0) + '.png')

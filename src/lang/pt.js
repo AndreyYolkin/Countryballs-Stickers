@@ -22,7 +22,7 @@ export default {
     text: {
       color: 'Col',
       background: 'Fundo',
-      defaultText: 'Toque duas vezes para editar'
+      defaultText: 'Toque duas vezes\npara editar'
     },
     settings: {
       legacy_stroke: 'Use traço antigo'

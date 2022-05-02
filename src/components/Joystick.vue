@@ -16,9 +16,9 @@ export default {
   props: {
     color: {
       type: String,
-      default: 'var(--v-primary-base)'
+      default: 'rgb(var(--v-theme-primary))'
     },
-    value: {
+    modelValue: {
       type: Object,
       default: () => ({
         x: 0,
@@ -44,10 +44,10 @@ export default {
     },
     joystick: {
       get() {
-        return this.value
+        return this.modelValue
       },
       set(value) {
-        this.$emit('input', value)
+        this.$emit('update:modelValue', value)
       }
     }
   },

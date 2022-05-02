@@ -28,7 +28,7 @@
         <v-icon>{{ mdiCog }}</v-icon>
       </v-tab>
     </v-tabs>
-    <v-window v-model="tab" touchless class="tw-overflow-y-auto">
+    <v-window v-model="tab" :touch="false" class="tw-overflow-y-auto">
       <v-window-item>
         <TabFlag
           @custom="$emit('custom', 'flag')"

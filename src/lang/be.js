@@ -22,7 +22,7 @@ export default {
     text: {
       color: 'Колер',
       background: 'Фон',
-      defaultText: 'Двойчы пстрычка для рэдагавання'
+      defaultText: 'Двойчы пстрычка\nдля рэдагавання'
     },
     settings: {
       legacy_stroke: 'Выкарыстоўваць старую абводку'

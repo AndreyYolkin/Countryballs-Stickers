@@ -8,8 +8,8 @@
         <div class="tw-col-span-1 tw-self-center">
           <div class="tw-aspect-w-1 tw-aspect-h-1 tw-w-full tw-shadow">
             <v-badge
-              color="pink"
-              class="tw-text-white"
+              color="secondary"
+              class="!tw-text-white"
               :content="$t('app.beta')"
               :model-value="true"
               offset-x="90"
@@ -43,7 +43,7 @@
         left
         bottom
         color="red darken-1"
-        class="tw-fixed tw-bottom-[20px] text-white"
+        class="tw-fixed !tw-bottom-3 !tw-left-3 text-white"
         @click="$refs.canvas.deleteAccessories()"
       >
         <v-icon color="white">
@@ -57,7 +57,7 @@
         bottom
         fixed
         color="#5567EC"
-        class="tw-fixed tw-bottom-[40px] text-white"
+        class="tw-fixed !tw-bottom-16 !tw-right-3 text-white"
         @click="$refs.canvas.downloadImage(), randomShowInerstitital()"
       >
         <v-icon>{{ mdiDownload }}</v-icon>
@@ -68,13 +68,13 @@
         bottom
         fixed
         color="#5567EC"
-        class="tw-fixed tw-bottom-[20px] text-white"
+        class="tw-fixed !tw-bottom-3 !tw-right-3 text-white"
         @click="$refs.canvas.shareImage(), randomShowInerstitital()"
       >
         <v-icon>{{ mdiShareVariant }}</v-icon>
       </v-btn>
     <v-dialog
-      max-width="600"
+      max-width="600px"
       v-model="customDialog"
       @click:outside="updatePhoto(), $refs.customDialog && $refs.customDialog.stopCameraStream()"
     >
@@ -86,7 +86,7 @@
         @closeDialog="customDialog=false, updatePhoto(), $refs.customDialog && $refs.customDialog.stopCameraStream()"
       />
     </v-dialog>
-    <v-dialog v-model="dialog" max-width="400" scrollable>
+    <v-dialog v-model="dialog" max-width="600" scrollable>
       <v-card>
         <v-card-title>{{ $t('poster.title') }}</v-card-title>
         <v-card-text v-html="$t('poster.text')" />
@@ -123,9 +123,9 @@ import { mdiClose, mdiContentSave, mdiDownload, mdiShareVariant, mdiDelete, mdiO
 import Tabs from '@/components/Tabs'
 import CustomImage from '@/components/CustomImage'
 import Canvas from '@/components/Canvas'
-import { mapState } from 'vuex'
 import { AdMob, InterstitialAdPluginEvents, BannerAdSize, BannerAdPosition, BannerAdPluginEvents } from '@capacitor-community/admob'
 import { Storage } from '@capacitor/storage'
+import { useStore } from './store'
 
 export default {
   name: 'App',
@@ -156,20 +156,24 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      selected: state => state.selected.active
-    })
+    selected() {
+      return this.store.selected.active
+    }
   },
-  async created () {
-    this.$store.watch(state => state.snackbar.text, () => {
-      const msg = this.$store.state.snackbar.text
+  setup() {
+    const store = useStore()
+    store.$subscribe((_, state) => {
+      const msg = state.snackbar.text
       if (msg !== '') {
         this.snackbar.active = true
-        this.snackbar.text = this.$store.state.snackbar.text
-        this.snackbar.status = this.$store.state.snackbar.status
-        this.$store.commit('setSnackbar', { text: '' })
+        this.snackbar.text = state.snackbar.text
+        this.snackbar.status = state.snackbar.status
+        store.setSnackbar({ text: '' })
       }
     })
+    return { store }
+  },
+  async created () {
     const cookieLanguage = (await Storage.get({ key: 'language' })).value
     if (cookieLanguage) {
       this.$root.$i18n.locale = cookieLanguage
@@ -178,16 +182,12 @@ export default {
   mounted() {
     setTimeout(this.showInterstitial, 15000)
     AdMob.addListener(InterstitialAdPluginEvents.Loaded, (info) => {
-      console.log('prepared')
     })
     AdMob.addListener(BannerAdPluginEvents.Loaded, (info) => {
       this.showBanner()
     })
   },
   methods: {
-    log(...data) {
-      console.log('data:', ...data)
-    },
     saveAgreement() {
       Storage.set({ key: 'privacy', value: 'true' })
     },
@@ -249,5 +249,9 @@ export default {
   .layout {
     padding: 0 calc(50% - 590px);
   }
+}
+
+.v-dialog .v-overlay__content {
+  width: calc(100% - 48px);
 }
 </style>

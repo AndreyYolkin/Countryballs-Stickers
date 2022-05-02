@@ -1,17 +1,18 @@
 module.exports = {
   prefix: 'tw-',
-  purge: false,
-  darkMode: false, // or 'media' or 'class'
+  content: [
+    './index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx}',
+  ],
+  corePlugins: {
+    preflight: false
+  },
   theme: {
     extend: {
       gridTemplateRows: {
         auto: 'auto',
       }
     },
-  },
-
-  variants: {
-    extend: {},
   },
   plugins: [require('@tailwindcss/aspect-ratio')],
 }

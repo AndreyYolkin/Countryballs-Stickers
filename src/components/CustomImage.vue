@@ -43,10 +43,10 @@
 <script>
 import { Cropper } from 'vue-advanced-cropper'
 import { mdiClose, mdiFileUpload } from '@mdi/js'
-import { mapMutations } from 'vuex'
 import 'vue-advanced-cropper/dist/style.css'
 import CircleStencil from './CircleStencil.vue'
 import SquareStencil from './SquareStencil.vue'
+import { useStore } from '../store'
 
 export default {
   components: {
@@ -58,16 +58,22 @@ export default {
       default: ''
     },
   },
-  data: () => ({
-    coordinates: {},
-    image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAALQAQMAAACDmdXfAAAAA1BMVEX///+nxBvIAAAAYklEQVR42uzBgQAAAACAoP2pF6kCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOD24EAAAAAAQJC/9SBXAAAAAEsB//AAASF4jxUAAAAASUVORK5CYII=',
-    croppedImage: null,
-    showCropper: true,
-    isCamera: false,
-    isPhotoTaken: false,
-    mdiClose,
-    mdiFileUpload
-  }),
+  setup() {
+    const store = useStore()
+    return { store }
+  },
+  data() {
+    return ({
+      coordinates: {},
+      image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAALQAQMAAACDmdXfAAAAA1BMVEX///+nxBvIAAAAYklEQVR42uzBgQAAAACAoP2pF6kCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOD24EAAAAAAQJC/9SBXAAAAAEsB//AAASF4jxUAAAAASUVORK5CYII=',
+      croppedImage: null,
+      showCropper: true,
+      isCamera: false,
+      isPhotoTaken: false,
+      mdiClose,
+      mdiFileUpload
+    })
+  },
   computed: {
     touch() {
       return matchMedia('(hover: none), (pointer: coarse)').matches
@@ -94,9 +100,6 @@ export default {
   //   this.getImage()
   // },
   methods: {
-    ...mapMutations({
-      $setSnackbar: 'setSnackbar',
-    }),
     getImage () {
       // let temp_image = null
       // const reader = new FileReader()
@@ -162,7 +165,7 @@ export default {
 
       if (!navigator.mediaDevices) {
         this.toggleCamera()
-        this.$setSnackbar({ text: 'Ошибка: браузер не разрешает пользоваться камерой', status: 'error' })
+        this.store.setSnackbar({ text: 'Ошибка: браузер не разрешает пользоваться камерой', status: 'error' })
         return
       }
 
@@ -174,17 +177,17 @@ export default {
         }).catch((err) => {
           console.log(err)
           if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-            this.$setSnackbar({ text: 'Возможно не подключена камера', status: 'error' })
+            this.store.setSnackbar({ text: 'Probably there is no camera', status: 'error' })
           } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
-            this.$setSnackbar({ text: 'Возможно камера используется в другом приложении', status: 'error' })
+            this.store.setSnackbar({ text: 'Probably camera is used in another app', status: 'error' })
           } else if (err.name === 'OverconstrainedError' || err.name === 'ConstraintNotSatisfiedError') {
-            this.$setSnackbar({ text: 'Ошибка камеры', status: 'error' })
+            this.store.setSnackbar({ text: 'Camera error', status: 'error' })
           } else if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-            this.$setSnackbar({ text: 'Разрешите использовать камеру', status: 'error' })
+            this.store.setSnackbar({ text: 'Please allow to use camera', status: 'error' })
           } else if (err.name === 'TypeError' || err.name === 'TypeError') {
-            this.$setSnackbar({ text: 'Ошибка камеры', status: 'error' })
+            this.store.setSnackbar({ text: 'Camera error', status: 'error' })
           } else {
-            this.$setSnackbar({ text: 'Ошибка камеры', status: 'error' })
+            this.store.setSnackbar({ text: 'Camera error', status: 'error' })
           }
           this.toggleCamera()
         })

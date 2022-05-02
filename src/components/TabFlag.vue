@@ -7,12 +7,12 @@
           :label="$t('app.continentLabel')"
           item-value="value"
           item-text="text"
-          outlined
-          dense
+          variant="outlined"
+          density="compact"
           hide-details
           :items="continents"
         />
-        <v-btn outlined color="primary" height="40" @click="$emit('custom')">
+        <v-btn variant="outlined" color="primary" height="40" @click="$emit('custom')">
           {{ $t("app.custom") }}
         </v-btn>
       </div>
@@ -21,7 +21,7 @@
           v-model="stroke"
           hide-details
           color="primary"
-          class="mt-0 mb-2"
+          class="mt-0 mb-0 tw-flex-grow-0 tw-w-fit"
           inset
           :label="$t('app.settings.legacy_stroke')"
         />
@@ -38,6 +38,7 @@
           >
             <v-item v-slot="{ active, toggle }">
               <v-card
+                :key="continent + index"
                 :image="getImgUrl(index)"
                 class="d-flex align-center tw-aspect-w-1 tw-aspect-h-1"
                 @click="$emit('setflag', { index, continent }), toggle()"
@@ -65,9 +66,13 @@
 
 <script>
 import { mdiCheck } from '@mdi/js'
-import { mapMutations } from 'vuex'
+import { useStore } from '../store'
 
 export default {
+  setup() {
+    const store = useStore()
+    return { store }
+  },
   data() {
     return {
       allFlags: {},
@@ -78,17 +83,18 @@ export default {
   },
   computed: {
     continents() {
-      return this.$store.state.app.continents.map((c) => ({
+      return this.store.app.continents.map((c) => ({
         text: this.$t(`app.continents.${c}`),
+        title: this.$t(`app.continents.${c}`),
         value: c,
       }))
     },
     continent: {
       get() {
-        return this.$store.state.app.continent
+        return this.store.app.continent
       },
       set(value) {
-        this.$setContinent(value)
+        this.store.setContinent(value)
       },
     },
   },
@@ -107,11 +113,7 @@ export default {
     this.loadFlags()
   },
   methods: {
-    ...mapMutations({
-      $setContinent: 'setContinent',
-    }),
     loadFlags() {
-      console.log('called')
       this.allFlags = {
         EU: require.context('../assets/buttons/FL_EU', false, /\.png$/),
         AS: require.context('../assets/buttons/FL_AS', false, /\.png$/),
@@ -121,7 +123,6 @@ export default {
         OT: require.context('../assets/buttons/FL_OT', false, /\.png$/),
       }
       this.flags = this.allFlags[this.continent]
-      console.log(this.flags)
     },
     getImgUrl(index) {
       return this.flags('./' + index.toString().padStart(3, 0) + '.png')

@@ -85,7 +85,7 @@ export default {
       @drag="onResize"
       @drag-end="onResizeEnd"
     >
-      <img src="@/assets/handle.svg" @mousedown.prevent />
+      <img :src="require('../assets/handle.svg')" @mousedown.prevent />
     </draggable-element>
     <draggable-area @move="onMove" @move-end="onMoveEnd">
       <stencil-preview

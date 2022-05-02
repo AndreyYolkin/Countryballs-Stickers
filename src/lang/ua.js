@@ -22,7 +22,7 @@ export default {
     text: {
       color: 'Колір',
       background: 'Фон',
-      defaultText: 'Двічі клацніть, щоб редагувати'
+      defaultText: 'Двічі клацніть,\nщоб редагувати'
     },
     settings: {
       legacy_stroke: 'Використовувати стару обведення'
