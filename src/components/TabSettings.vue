@@ -13,14 +13,25 @@
       color="primary"
       variant="outlined"
     >
-      Whats next?
+      What's next?
       <v-dialog
         v-model="dialog"
+        max-width="400px"
         activator="parent"
       >
         <v-card>
           <v-card-text>
-            <p class="mb-2">War is always bad and you should know it.</p>
+            <p class="mb-2">War is always bad.</p>
+            <p class="mb-2">Find out what you can do to help people who suffered from
+              military agression here:
+              <v-btn
+                target="_blank"
+                variant="outlined"
+                href="https://ukraineisforever.notion.site/How-you-can-support-Ukraine-8331e06fe69049debedad8f740dcd75c"
+              >
+                💙💛
+              </v-btn>
+            </p>
             <p class="mb-2">There are no real weapons in this app, and they will never be added.</p>
             <p class="mb-2">But there are a lot updates, which I want to add instead of it. Some of them:
             <ol class="ml-6">
@@ -30,16 +41,6 @@
               <li>Better text editor</li>
               <li>Free drawing mode</li>
             </ol>
-            </p>
-            <p>Find out what you can do to help people who suffered from
-              military agression here:
-              <v-btn
-                target="_blank"
-                variant="outlined"
-                href="https://ukraineisforever.notion.site/How-you-can-support-Ukraine-8331e06fe69049debedad8f740dcd75c"
-              >
-                💙💛
-              </v-btn>
             </p>
           </v-card-text>
           <v-card-actions>
